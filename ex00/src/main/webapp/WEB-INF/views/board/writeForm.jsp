@@ -11,12 +11,19 @@
 <form action="write.do" method="post">
 	제목
 	<input type="text" name="title" id="title"> <br>
+	
 	작성자
 	<input type="text" name="writer" id="writer"> <br>
+	
 	내용
 	<textarea name="content" id="content"></textarea><br>
+	
 	비밀번호
 	<input type="password" name="pw" id="pw"> <br>
+	
+	비밀번호 확인
+	<input type="password" name="pw2" id="pw2"> <br>
+	
 	<button onclick="location='list.do'">취소</button>
 	<button>등록</button>
 </form>

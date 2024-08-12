@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="org.zerock.controller">
+	<logger name="org.zerock">
 		<level value="info" />
 	</logger>
 	
@@ -21,20 +21,28 @@
 	</logger>
 	
 	<logger name="org.springframework.beans">
-		<level value="info" />
+		<level value="warn" />
 	</logger>
 	
 	<logger name="org.springframework.context">
-		<level value="info" />
+		<level value="warn" />
 	</logger>
 
 	<logger name="org.springframework.web">
 		<level value="info" />
 	</logger>
+		<logger name="jdbc.resultset">
+		<level value="warn" />
+	</logger>
+	<logger name="jdbc.audit">
+		<level value="warn" />
+	</logger>
+	<logger name="jdbc.connection">
+		<level value="warn" />
+	</logger>
 
 	<!-- Root Logger -->
 	<root>
-		<priority value="warn" />
 		<appender-ref ref="console" />
 	</root>
 	
