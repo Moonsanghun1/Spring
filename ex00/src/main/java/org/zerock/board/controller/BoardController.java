@@ -42,7 +42,6 @@ public class BoardController {
 	@GetMapping("/view.do")
 	public String view(Model model, Long no, int inc) {
 		log.info("BoardController.view()");
-		
 		model.addAttribute("vo", service.view(no,inc));
 		return "board/view";
 	}
