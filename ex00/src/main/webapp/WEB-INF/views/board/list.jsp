@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri= "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="pageNav" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,6 +21,7 @@
 
 </style>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <script type="text/javascript">
 	
 	$(function() {
@@ -61,6 +63,9 @@
   	</c:forEach>
   </div>
   <div class="card-footer">
+  <div>
+  	<pageNav:pageNav listURI="list.do" pageObject="${pageObject }" />
+  </div>
 <a href="writeForm.do" class= "btn btn-primary">글등록</a></div>
 </div>
 

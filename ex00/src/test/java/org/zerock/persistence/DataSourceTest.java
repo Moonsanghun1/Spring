@@ -18,8 +18,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
+//test에 사용되는 클래스 
 @RunWith(SpringJUnit4ClassRunner.class)
+// 설정 파일 지정 -> 서버와 상관없음. : root-context.xml
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
+//log 객체 생성 -> lombok : log이름으로 처리
 @Log4j
 public class DataSourceTest {
 	//자동 DI - root-context.xml에 bean 태그로 설정

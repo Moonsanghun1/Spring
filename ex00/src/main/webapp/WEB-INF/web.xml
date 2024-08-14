@@ -22,6 +22,11 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
 		</init-param>
+		<!-- JSP404오류 예외 처리 -->
+		<init-param>
+			<param-name>throwExceptionIfNoHandlerFound</param-name>
+			<param-value>true</param-value>
+		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 		
@@ -29,5 +34,35 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-
+	
+		<!-- sitemesh 필터 등록 - sitemesh.xml, decorators.xml, default_decorator.jsp -->
+		<!-- 필터 등록 : sitemesh, Spring 한글 처리 -->
+		<filter>
+			<filter-name>sitemesh</filter-name>
+			<filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
+		</filter>
+		<filter-mapping>
+			<filter-name>sitemesh</filter-name>
+			<url-pattern>*.do</url-pattern>
+		</filter-mapping>
+		<!-- 한글처리 : 카페 - Spring 게시판에서 검색 -->
+		<filter>
+			<filter-name>encodingFilter</filter-name>
+				<filter-class>
+				org.springframework.web.filter.CharacterEncodingFilter
+				</filter-class>
+			<init-param>
+				<param-name>encoding</param-name>
+				<param-value>UTF-8</param-value>
+			</init-param>
+		</filter>
+		<filter-mapping>
+			<filter-name>encodingFilter</filter-name>
+			<url-pattern>/*</url-pattern>
+		</filter-mapping>
+		<!-- JSP가 없는 경우의 처리, Spring -->
+		<error-page>
+			<error-code>404</error-code>
+			<location>/WEB-INF/views/error/noJSP_404.jsp</location>
+		</error-page>
 </web-app>
