@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.zerock.domain.SampleDTO;
 import org.zerock.domain.TodoDTO;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -97,9 +98,10 @@ public class SampleController {
 	// List로 여러개의 데이터를 받을 떄는 @RequestParam을 꼭 써야한다.
 	public @ResponseBody SampleDTO ex06() {
 		// /WEB-INF/views/ + ex01 + .jsp
-		SampleDTO dto = new SampleDTO();
-		dto.setName("홍길");
-		dto.setAge(10);
+		// DTO에 @AllArgsConstructor가 붙어있으면 생성할 때 파라미터값을 넣어준다.
+		SampleDTO dto = new SampleDTO("홍길", 10);
+//		dto.setName("홍길");
+//		dto.setAge(10);
 		log.info("ex03() : dto=" + dto);
 		return dto;
 	}
@@ -151,7 +153,7 @@ public class SampleController {
             .url("https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/quotations/inquire-price?fid_cond_mrkt_div_code=J&fid_input_iscd=005930")
             .get()
             .addHeader("content-type", "application/json")
-            .addHeader("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6IjUxMWQ5ZTUyLTdmMjEtNDU2Ny04YjczLWE0ZDg1NjFmYWQ4MSIsInByZHRfY2QiOiIiLCJpc3MiOiJ1bm9ndyIsImV4cCI6MTcyMzcwMzIyMywiaWF0IjoxNzIzNjE2ODIzLCJqdGkiOiJQU2RUUHQ2WTZZOGpsejJiWmF2eWxlbGEwTFB1bkl1UDlDQXEifQ.PgrGhb-apyAYt6WL05nUruIxVqhjCI1rRPEWF2kQoDLAI94CmUxPovCIH-VeHTTMP4GCYo6xYW5rsl0kq_0N4A")  // 여기에 실제 토큰 값을 넣어야 합니다.
+            .addHeader("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6ImFmMjdlZmM1LTc1NWYtNGNjZS1iMjA0LTZhNjA4Y2EzZGI3ZiIsInByZHRfY2QiOiIiLCJpc3MiOiJ1bm9ndyIsImV4cCI6MTcyMzg4MTU3OCwiaWF0IjoxNzIzNzk1MTc4LCJqdGkiOiJQU2RUUHQ2WTZZOGpsejJiWmF2eWxlbGEwTFB1bkl1UDlDQXEifQ.Uu2HID2lHDmV-FrWHGp4p-26wsdiY1B8He8x0gKQie3flah13_62rxfFHQ38C0vfXyNvZdwowfbvj1Gdayx7oA")  // 여기에 실제 토큰 값을 넣어야 합니다.
             .addHeader("appkey", "PSdTPt6Y6Y8jlz2bZavylela0LPunIuP9CAq")
             .addHeader("appsecret", "5A9NiHMzRkPIxx6rujN5hkpZ/LI4lEU69Yh34G4b9YzUxgrSgQMPTMpztTzoXtdIytjMYr6UwlH+CMNQxI33p04UmV4c4KhKrNnWXmV0Y0Qpjp2+Tn4Jxg6iPNNNU5F0pt+m0NQ0ZDnuW+I0CKgjxYTYdwtu7QDmPF/5Z4CCYDVCqwot0zo=")
             .addHeader("tr_id", "FHKST01010100")
