@@ -15,11 +15,13 @@
 <script type="text/javascript">
 $(function() {
 	
-let json ='[{"SampleDTO":{"name":"홍길동","age":10}},{"SampleDTO":{"name":"관리자","age":30}}]';;
+let json ='[{"SampleDTO":{"name":"홍길동","age":10}},{"SampleDTO":{"name":"관리자","age":30}}]';
+	console.log(JSON.parse(json));
 	$("#dataTable").text(json);
 	console.log(JSON.parse(json));
 	let obj = JSON.parse(json);
 	for(var i in obj) {
+		
 		$("#row").html('<tr><td>'+ obj.name +'</td><td>'+ obj.age +'</td></tr>')
 		 
     };

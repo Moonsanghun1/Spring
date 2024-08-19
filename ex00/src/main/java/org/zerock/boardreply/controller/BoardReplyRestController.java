@@ -1,0 +1,70 @@
+package org.zerock.boardreply.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.zerock.boardreply.service.BoardReplyService;
+import org.zerock.boardreply.vo.BoardReplyVO;
+
+import com.webjjang.util.page.PageObject;
+
+import lombok.Setter;
+import lombok.extern.log4j.Log4j;
+
+//자동생성
+@RestController
+@RequestMapping("/boardreply")
+@Log4j
+public class BoardReplyRestController {
+	
+	// 자동 DI 
+//	@Setter(onMethod_ = @Autowired )
+	@Autowired 
+	@Qualifier("BoardReplyServiceImpl")
+	private BoardReplyService service;
+	
+	// 1. list - get
+	@GetMapping(value = "/list.do", produces = {
+			MediaType.APPLICATION_XML_VALUE,
+			MediaType.APPLICATION_JSON_UTF8_VALUE
+	})
+	public ResponseEntity<Map<String, Object>> list(PageObject pageObject, Long no){
+		log.info("list - page :" + pageObject.getPage() + ", no : " + no);
+		// DB에서 데이터를 가져와서 넘겨준다.
+		List<BoardReplyVO> list = service.list(pageObject, no);
+		// PageObject도 념겨야 한다. 
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("pageObject", pageObject);
+		log.info("After - map : " +  map);
+		return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+		// list와 pageObject의 데이터를 확인
+		
+	}
+	
+	// 2. write - post
+	@PostMapping("/write.do")
+	public Integer write(BoardReplyVO vo) {
+		return 0;
+	}
+	// 3. update - post
+	@PostMapping("/update.do")
+	public Integer update(BoardReplyVO vo) {
+		return 0;
+	}
+	// 4. delete - get
+	@GetMapping("/delete.do")
+	public Integer delete(BoardReplyVO vo) {
+		return 0;
+	}
+}

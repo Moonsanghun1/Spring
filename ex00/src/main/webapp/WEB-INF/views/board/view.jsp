@@ -7,11 +7,18 @@
 <head>
 <meta charset="UTF-8">
 <title>일반 게시판 글보기</title>
-<jsp:include page="../jsp/webLib.jsp"/>
 
 <style type="text/css">
 </style>
-
+<script type="text/javascript">
+	// 보고있는 일반 게시판의 글번호를 전역 변수로 지정해보자.
+	let no = ${vo.no};
+	console.log("전역 변수 no: " + no );
+</script>
+<script src="/resources/js/reply.js"></script>
+<script type="text/javascript">
+	replyService.list();
+</script>
 <script type="text/javascript">
 $(function(){
 	
