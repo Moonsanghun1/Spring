@@ -7,18 +7,21 @@
 <head>
 <meta charset="UTF-8">
 <title>일반 게시판 글보기</title>
+<script src="/resources/js/dateTime.js"></script>
 
 <style type="text/css">
 </style>
 <script type="text/javascript">
 	// 보고있는 일반 게시판의 글번호를 전역 변수로 지정해보자.
 	let no = ${vo.no};
+	let replyPage = 1;
 	console.log("전역 변수 no: " + no );
 </script>
 <script src="/resources/js/reply.js"></script>
 <script type="text/javascript">
-	replyService.list();
+	//replyService.list();
 </script>
+<script type="text/javascript" src="/resources/js/replyProcess.js"></script>
 <script type="text/javascript">
 $(function(){
 	
@@ -75,7 +78,12 @@ $(function(){
 	  	<button class="btn btn-warning" >취소</button>
 	  </div>
 	</div>
+<div>
+	<jsp:include page="boardreply.jsp"></jsp:include>
 </div>
+</div>
+<!-- 글 상세보기 card의 끝 -->
+
 
 <!-- The Modal -->
 <div class="modal" id="delete">
