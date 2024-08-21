@@ -249,4 +249,9 @@ public class SampleController {
         // JSP로 전달
         return "sample/tokenP";
     }
+    @GetMapping("/chart")
+    public String chart() {
+        
+        return "sample/chart"; // stockPrice.jsp로 전달
+    }
 }

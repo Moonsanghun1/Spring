@@ -39,12 +39,14 @@
 
       <!-- Modal body -->
       <div class="modal-body">
+      	<input type="hidden" id = "replyRno" >
        <textarea rows="4" class="form-control" id ="replyContent"></textarea>
       </div>
 
       <!-- Modal footer -->
       <div class="modal-footer">
-        <button  class="btn btn-primary" id= "replyWriteBtn">등록</button>
+        <button class="btn btn-primary" id= "replyWriteBtn">등록</button>
+        <button class="btn btn-success" id= "replyUpdateBtn1">수정</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal" id="replyCloseBtn">Close</button>
       </div>
 

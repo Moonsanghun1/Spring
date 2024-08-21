@@ -38,5 +38,4 @@
  	if(gap < (1000 * 60 * 60 * 24)) return toTime(timeStemp);
  	// 24시간이 지난 경우는 날짜 표시
  	else return toDate(timeStemp, "-");
- 	
  }

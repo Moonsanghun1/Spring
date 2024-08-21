@@ -47,7 +47,7 @@
  			type : "post", // 데이터 전송 방식
  			url : "/boardreply/write.do",
  			data : JSON.stringify(reply), // 서버에 전송되는 데이터
- 			contentType : "application/json;4 charset=UTF-8",
+ 			contentType : "application/json; charset=UTF-8",
  			success : function(result, status, xhr) {
  				if(callback)
  					callback(result);
@@ -55,19 +55,68 @@
  				
  			},
  			error : function(xhr, status, er) {
+ 				console.log("xhr : " + xhr);
+ 				console.log("status : " + status);
+ 				console.log("er : " + er);
  				if(error){
- 					callback(er);
+ 					error(er);
  				}	
+ 				else alert("댓글 등록에 실패했습니다");
  			}
  		});
  	},
  	// 일반 게시판 댓글 수정 처리를 위한 함수 - replyService.update(댓글 객체, 성공함수, 실패함수);
  	"update" : function(reply, callback, error) {
  		console.log("Board reply update----------------------")
+ 		$.ajax({
+ 			type : "post", // 데이터 전송 방식
+ 			url : "/boardreply/update.do",
+ 			data : JSON.stringify(reply), // 서버에 전송되는 데이터
+ 			contentType : "application/json; charset=UTF-8",
+ 			// 성공했을 때 함수
+ 			success : function(result, status, xhr) {
+ 				if(callback)
+ 					callback(result);
+ 					else alert(result);
+ 				
+ 			},
+ 			// 실패했을 때 함수
+ 			error : function(xhr, status, er) {
+ 				console.log("xhr : " + xhr);
+ 				console.log("status : " + status);
+ 				console.log("er : " + er);
+ 				if(error){
+ 					error(er);
+ 				}	
+ 				else alert("댓글 수정에 실패했습니다");
+ 			}
+ 		});
  	},
  	// 일반 게시판 댓글 삭제 처리를 위한 함수 - replyService.delete(rno, 성공함수, 실패함수);
  	"delete" : function(rno, callback, error) {
- 		console.log("Board reply delete----------------------")
+ 		console.log("Board reply delete----------------------");
+ 		$.ajax({
+ 			type : "get", // 데이터 전송 방식
+ 			url : "/boardreply/delete.do?rno="+rno,
+ 			
+ 			// 성공했을 때 함수
+ 			success : function(result, status, xhr) {
+ 				if(callback)
+ 					callback(result);
+ 					else alert(result);
+ 				
+ 			},
+ 			// 실패했을 때 함수
+ 			error : function(xhr, status, er) {
+ 				console.log("xhr : " + xhr);
+ 				console.log("status : " + status);
+ 				console.log("er : " + er);
+ 				if(error){
+ 					error(er);
+ 				}	
+ 				else alert("댓글 수정에 실패했습니다");
+ 			}
+ 		});
  	},
  	
  };

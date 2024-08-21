@@ -191,7 +191,7 @@ $(function() {
 		<p>이 홈페이지의 저작권은 문상훈에게 있습니다.</p>
 	</footer>
 
-	<c:if test="${ !empty msg}">
+	
 		<!-- msg를 표시할 모달창 -->
 		<!-- The Modal -->
 		<div class="modal" id="msgModal">
@@ -216,6 +216,7 @@ $(function() {
 			</div>
 		</div>
 
+	<c:if test="${ !empty msg}">
 		<!-- 모달을 보이게 하는 javascript -->
 		<script type="text/javascript">
 		$(function() {

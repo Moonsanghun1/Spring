@@ -72,14 +72,38 @@ public class BoardReplyRestController {
 		return new ResponseEntity<String>("댓글 등록이 되었습니다.", HttpStatus.OK);
 	}
 	// 3. update - post
-	@PostMapping("/update.do")
-	public Integer update(BoardReplyVO vo) {
-		return 0;
+	@PostMapping(value = "/update.do", 
+			consumes = "application/json", //no, content
+			produces = "text/plain; charset=UTF-8"
+			) 
+	public ResponseEntity<String> update(@RequestBody BoardReplyVO vo, HttpSession session) {
+		
+		// 로그인이 되어있어야 사용할 수 있다. 
+		vo.setId(getId(session));
+		
+		Integer result = service.update(vo);
+		
+		if(result == 1)
+			return new ResponseEntity<String>("댓글 수정이 되었습니다.", HttpStatus.OK);
+		else	
+			return new ResponseEntity<String>("댓글 수정에 실패했습니다.", HttpStatus.OK);
+		
 	}
 	// 4. delete - get
-	@GetMapping("/delete.do")
-	public Integer delete(BoardReplyVO vo) {
-		return 0;
+	@GetMapping(value = "/delete.do", 
+			produces = "text/plain; charset=UTF-8"
+			) 
+	public ResponseEntity<String> delete(BoardReplyVO vo, HttpSession session) {
+		
+		// 로그인이 되어있어야 사용할 수 있다. 
+		vo.setId(getId(session));
+		
+		Integer result = service.delete(vo);
+		
+		if(result == 1)
+			return new ResponseEntity<String>("댓글 수정이 되었습니다.", HttpStatus.OK);
+		else	
+			return new ResponseEntity<String>("댓글 수정에 실패했습니다.", HttpStatus.OK);
 	}
 	private String getId(HttpSession session) {
 		// LoginVO vo = (LoginVO)sesstion.getAttribute("login");
