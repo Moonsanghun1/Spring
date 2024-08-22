@@ -21,20 +21,16 @@
 	// 강제 로그인- 내가 작성한 댓글에 대해서만 수정과 삭제가 가능하도록 만들기 위해서
 	id = "test";
 </script>
-<!-- 3. 댓글 객체(replyService)를 선언 : Ajax 처리 포함  -->
+<!-- 4. 댓글 객체(replyService)를 선언 : Ajax 처리 포함  -->
 <script src="/resources/js/reply.js"></script>
-<!-- 4. reply 호출 처리 함수 선언 + 이벤트 처리 -->
+<!-- 5. reply 호출 처리 함수 선언 + 이벤트 처리 -->
 <script type="text/javascript" src="/resources/js/replyProcess.js"></script>
+<!-- 3. util.js 포함시킴 -->
+<script src="/resources/js/util.js"></script>
 <script type="text/javascript">
 $(function(){
 	
 	// 이벤트 처리
-	// 글보기 이동 처리
-	$(".dataRow").click(function(){
-		let no = $(this).data("no");
-		// alert(no);
-		location = "view.do?no=" + no + "&inc=1";
-	});
 	$("#updateBtn").click(function(){
 		let no = $(this).data("no");
 		// alert(no);
@@ -43,6 +39,9 @@ $(function(){
 	
 	$("#delete").click(function(){
 		$("#pw").val("");
+	});
+	$("#listBtn").click(function(){
+		location = "list.do?page=${param.page}&perPageNum=${param.perPageNum}";
 	});
 	
 	
@@ -78,7 +77,7 @@ $(function(){
 	  	<button class="btn btn-primary" id="updateBtn" data-no="${vo.no }">수정</button>
 		<!-- 모달창은 열어서 비밀번호를 입력 받고 삭제하여 가는 처리 -->
 	  	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete">삭제</button>
-	  	<button class="btn btn-warning" >취소</button>
+	  	<button class="btn btn-warning" >리스트</button>
 	  </div>
 	</div>
 <div>

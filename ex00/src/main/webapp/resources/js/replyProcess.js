@@ -5,14 +5,20 @@ function showList(page){
 	replyService.list(page,
 		// 데이터 가져오기 성공했을 때 실행되는 함수 -> html tag를 만들어서 표시하는 함수 실행
 		function(data){
+			
 			//data의 구조 - {list[], pageObject}
 			let list = data.list;
+			
 			// ul tag안에 들어가는 문자열 
 			let str = "";
-			// 데이터가 없는 경우의 처리
+			
+			// 데이터가 없는 경우의 처리 ------------------
+			// 댓글 내용 출력
 			if(list==null || list.length == 0){
 			$(".chat").html("<li>데이터가 존재하지 않습니다.</li>");
-			return;}
+			$(".pagination").html("");
+			return;
+			}
 			//데이터가 있는 경우의 처리
 			for(let i = 0; i<list.length; i++){
 				str += "<li class=\"left clearfix\" data-rno=\"" + list[i].rno + "\">";
@@ -36,8 +42,12 @@ function showList(page){
 		
 			};
 		$(".chat").html(str);
+		
+		// 댓글 페이지에 대한 출력
+		 $(".pagination").html(replyPagination(data.pageObject));
 	});
 };	
+
 // 일반게시판 글보기가 처음에 보여질 때 댓글 리스트 보이기 실행
 showList(1);
 
@@ -123,7 +133,18 @@ $(function(){
 			}
 		);	
 	});
-
+	
+	// 댓글 페이지네이션 이벤트 처리
+	$(".pagination").on("click","a",function(){
+		let page = $(this).parent().data("page");
+		
+		if(page != replyPage){
+			replyPage = page;
+			showList(replyPage);
+		}
+		return false;
+	
+	})
 
 });
 

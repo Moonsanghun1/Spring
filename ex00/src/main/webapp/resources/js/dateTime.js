@@ -1,7 +1,7 @@
 /**
  * 날짜와 시간에 대한 표시와 처리
  */
- 
+
  // 날짜로 표시하는 처리
  // timeStemp : Long type의 시간 정보 데이터
  function toDate(timeStemp, separChar){

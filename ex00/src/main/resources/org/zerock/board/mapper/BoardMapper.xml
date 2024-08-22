@@ -13,11 +13,31 @@
 		  		no, title, writer, writeDate, hit 
 		  from 
 		  		board 
+		  	<!--  검색을 달아야 한다 -->
+		  	<include refid="search"/>
 		  	order by no desc
 	  	)
 	)
 	where rnum between #{startRow} and #{endRow}
   </select>
+  
+  <sql id="search">
+	  <if test="word !=null and word != ''.toString()">
+	  	where 
+	  	<trim prefixOverrides="or">
+	  		<!-- 'test' : 문자열(String), 't' : 문자(char) -> 문자열 - toStirng() 사용 -->
+	  		<if test="key.indexOf('t') >= 0">
+	  			or title like '%' || #{word} || '%'
+	  		</if>
+	  		<if test="key.indexOf('c') >= 0">
+	  			or content like '%' || #{word} || '%'
+	  		</if>
+	  		<if test="key.indexOf('w') >= 0">
+	  			or writer like '%' || #{word} || '%'
+	  		</if>
+	  	</trim>
+	  </if>	
+  </sql>
   
   <!-- 일반 게시판 글등록 -->
   <!--
@@ -37,6 +57,7 @@
   
   <select id="getTotalRow" resultType="Long">
  select count(*) from board
+ <include refid="search"/>
   </select>
   
   <select id="view" resultType="org.zerock.board.vo.BoardVO">
