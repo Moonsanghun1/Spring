@@ -17,6 +17,8 @@ public interface BoardMapper {
 	
 	public Integer write(BoardVO vo);
 	
+	public Integer writeTx(BoardVO vo);
+	
 	public BoardVO view(Long no);
 	
 	public Integer inc(Long no);

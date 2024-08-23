@@ -21,7 +21,6 @@ import org.zerock.boardreply.vo.BoardReplyVO;
 
 import com.webjjang.util.page.PageObject;
 
-import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 //자동생성

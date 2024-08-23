@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.zerock.board.mapper.BoardMapper;
 import org.zerock.board.vo.BoardVO;
 
@@ -32,10 +33,14 @@ public class BoardServiceImpl implements BoardService{
 		// 게시글 전체 개수 구하기
 		return mapper.list(pageObject);
 	}
+	// @Transactional - isert 2번이 성공을 해야 commit한다. 한개라도 오류가 나면 rollback.
+	@Transactional 
 	@Override
 	public Integer write(BoardVO vo) {
-		log.info("write() 실행");
-		return mapper.write(vo);
+		Integer result = mapper.write(vo); // 글번호를 시퀀스에서 새로운 번호 사용
+		//vo.setNo(10000L);
+		//mapper.writeTx(vo); // 위에서 사용한 글번호 재사용 - PK 예외 발생
+		return result; 
 	}
 	@Override
 	public BoardVO view(Long no, int inc) {

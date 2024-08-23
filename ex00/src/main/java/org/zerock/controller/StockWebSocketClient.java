@@ -41,6 +41,7 @@ public class StockWebSocketClient {
             Scanner scanner = new Scanner(System.in);
             System.out.println("1.주식호가, 2.주식호가해제, 3.주식체결, 4.주식체결해제, 5.주식체결통보(고객), 6.주식체결통보해제(고객), 7.주식체결통보(모의), 8.주식체결통보해제(모의)");
             System.out.println("Input Command :");
+            
             String cmd = scanner.nextLine();
 
             if (cmd.compareTo("0") <= 0 || cmd.compareTo("9") > 0) {

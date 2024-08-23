@@ -1,29 +1,16 @@
-package org.zerock.controller;
+package org.zerock.stock.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.zerock.domain.SampleDTO;
-import org.zerock.domain.TodoDTO;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.webjjang.util.file.FileUtil;
 
 import lombok.extern.log4j.Log4j;
 import okhttp3.MediaType;
@@ -36,150 +23,15 @@ import okhttp3.Response;
  * Handles requests for the application home page.
  */
 @Controller
-@RequestMapping("/sample")
+@RequestMapping("/stock")
 @Log4j
-public class SampleController {
-	@RequestMapping("") // /sample/
-	// return이 없으면(void)이면 uri 정보를 jsp 정보로 사용
-	// return이 String이면 redirect: -> redirect 시킨다. 없으면 jsp로 forward 시킨다.
-	public void basic() {
-		log.info("basic.............");
-	}
-	// @RequestMapping은 uri 맵핑이 get, post 방식만 허용
-	@RequestMapping(value = "/basic", method = {RequestMethod.GET, RequestMethod.POST})
-	public void basicGet() {
-		
-		log.info("basic get/post ............");
-		
-	}
-	// get만 사용. value 속성 하나만 남으면 기본으로 데이터가 들어가는 속성이 된다. 생략 가능
-	@GetMapping("/basicOnlyGet")
-	public void basicGet2() {
-		
-		log.info("basic get only get.........");
-		
-	}
+public class StockController {
 	
-	// get 방식 맵핑
-	@GetMapping("/ex01")
-	// property(VO = DTO)로 넘어오는 데이터 받기(setter 이름과 name이 같으면 자동으로 받는다.)
-	public String ex01(SampleDTO dto) {
-		// /WEB-INF/views/ + ex01 + .jsp
-		log.info("ex01() : dto=" + dto);
-	return "ex01";
-	}
-	// get 방식 맵핑
-	@GetMapping("/ex02")
-	// parameter 병수로 받기 - 변수명과 name이 같아야 한다. age가 없으면 오류가 난다.
-	public String ex02(@RequestParam("name")String name, @RequestParam(defaultValue = "0" ) int age) {
-		// /WEB-INF/views/ + ex01 + .jsp
-		log.info("ex02() : name=" + name + "age= " + age);
-		return "ex02";
-	}
-	// get 방식 맵핑
-	@GetMapping("/ex02List")
-	// parameter 병수로 받기 - 아이디 여러개를 받아서 처리 - List / 배열
-	// List로 여러개의 데이터를 받을 떄는 @RequestParam을 꼭 써야한다.
-	public String ex02List(@RequestParam ArrayList<String> ids, String[] names) {
-		// /WEB-INF/views/ + ex01 + .jsp
-		log.info("ex02List() : ids=" + ids + ", names= " + Arrays.toString(names));
-		for (String id : ids) {
-			log.info("ex02List() : id=" + id);
-		}
-		return "ex02List";
-	}
-	// get 방식 맵핑
-	@GetMapping("/ex03")
-	// parameter 병수로 받기 - 아이디 여러개를 받아서 처리 - List / 배열
-	// List로 여러개의 데이터를 받을 떄는 @RequestParam을 꼭 써야한다.
-	public String ex03(TodoDTO dto) {
-		// /WEB-INF/views/ + ex01 + .jsp
-		log.info("ex03() : dto=" + dto);
-		return "ex03";
-	}
-	// get 방식 맵핑
-	@GetMapping("/ex06")
-	// parameter 병수로 받기 - 아이디 여러개를 받아서 처리 - List / 배열
-	// List로 여러개의 데이터를 받을 떄는 @RequestParam을 꼭 써야한다.
-	public @ResponseBody SampleDTO ex06() {
-		// /WEB-INF/views/ + ex01 + .jsp
-		// DTO에 @AllArgsConstructor가 붙어있으면 생성할 때 파라미터값을 넣어준다.
-		SampleDTO dto = new SampleDTO("홍길", 10);
-//		dto.setName("홍길");
-//		dto.setAge(10);
-		log.info("ex03() : dto=" + dto);
-		return dto;
-	}
-	@GetMapping("/ex07")
-	public ResponseEntity<String> ex07(){
-		
-		log.info("/ex07........");
-		
-		String msg = "{\"name\":\"홍길동\"}";
-		
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Type", "application/json;charset=UTF-8");
-		
-		return new ResponseEntity<>(msg, headers, HttpStatus.OK);
-	}
-	// get 방식 맵핑
-	@GetMapping("/exUpload")
-	public void exUpload() {
-		log.info("exUpload()..........");
-	}
-	@GetMapping("/stock")
-	public void stock() {
-		log.info("stock()..........");
-	}
-	@PostMapping("/exUploadPost")
-	public void exUploadPost(@RequestParam ArrayList<MultipartFile> files){
-		
-		log.info("/exUploadPost........");
-		
-		for(MultipartFile file : files) {
-			log.info("----------------------");
-			log.info("name: " + file.getOriginalFilename());
-			log.info("size: " + file.getSize());
-		}
-		
-		files.forEach(file -> {
-			log.info("--------------------");
-			log.info("name: " + file.getOriginalFilename());
-			log.info("size: " + file.getSize());
-		});
-		
-		
-	}
-	// get 방식 맵핑
-	@GetMapping("/exUpload2")
-	public void exUpload2() {
-		log.info("exUpload()..........");
-	}
-	@PostMapping("/exUploadPost2")
-	public void exUploadPost2(@RequestParam ArrayList<MultipartFile> files,HttpServletRequest request){
-		log.info("/exUploadPost........");
+    private final String API_URL = "https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/quotations/inquire-time-itemchartprice";
+    private final String APP_KEY = "PSdTPt6Y6Y8jlz2bZavylela0LPunIuP9CAq"; // 실제 키로 교체 필요
+    private final String APP_SECRET = "5A9NiHMzRkPIxx6rujN5hkpZ/LI4lEU69Yh34G4b9YzUxgrSgQMPTMpztTzoXtdIytjMYr6UwlH+CMNQxI33p04UmV4c4KhKrNnWXmV0Y0Qpjp2+Tn4Jxg6iPNNNU5F0pt+m0NQ0ZDnuW+I0CKgjxYTYdwtu7QDmPF/5Z4CCYDVCqwot0zo="; // 실제 키로 교체 필요
+    private String AUTH_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6IjE3ZTI2ODg2LTM2YzYtNGUxZC1iNTljLTU4YmFhMzExNDVkOCIsInByZHRfY2QiOiIiLCJpc3MiOiJ1bm9ndyIsImV4cCI6MTcyNDQ3OTA3NSwiaWF0IjoxNzI0MzkyNjc1LCJqdGkiOiJQU2RUUHQ2WTZZOGpsejJiWmF2eWxlbGEwTFB1bkl1UDlDQXEifQ.lwtkph55JkCS_USwY97K7pwO63V84lx5uHE9AiIn5C-Y5vJmInE6MgKqGIF0YtVPyIcPeJk5Vtct-Tyr8leLDg";
 
-		String path = "/upload/image";
-		
-		for(MultipartFile file : files) {
-			log.info("----------------------");
-			log.info("name: " + file.getOriginalFilename());
-			log.info("size: " + file.getSize());
-		}
-		
-		files.forEach(file -> {
-			log.info("--------------------");
-			log.info("name: " + file.getOriginalFilename());
-			log.info("size: " + file.getSize());
-			try {
-				FileUtil.upload(path, file, request);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		});
-		
-	}
     @GetMapping("/stock-price")
     public String getStockPrice(Model model) {
         OkHttpClient client = new OkHttpClient();
@@ -209,10 +61,10 @@ public class SampleController {
             model.addAttribute("priceData", "Error: " + e.getMessage());
         }
 
-        return "sample/stockPrice"; // stockPrice.jsp로 전달
+        return "stock/stockPrice"; // stockPrice.jsp로 전달
     }
-    
-    @GetMapping("/get-token")
+    //(웹소켓) 접속키 
+    @GetMapping("/get-token-webSocket")
     public String getToken(Model model) {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         MediaType mediaType = MediaType.parse("application/json");
@@ -246,15 +98,22 @@ public class SampleController {
         }
 
         // JSP로 전달
-        return "sample/token";
+        return "stock/token";
     }
+    // 접근토큰발급
     @GetMapping("/get-token-p")
-    public String getTokenP(Model model) {
+    public String getTokenP() {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         MediaType mediaType = MediaType.parse("application/json");
 
-        // 요청 바디 생성
-        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"grant_type\": \"client_credentials\",\r\n    \"appkey\": \"PSdTPt6Y6Y8jlz2bZavylela0LPunIuP9CAq\",\r\n    \"appsecret\": \"5A9NiHMzRkPIxx6rujN5hkpZ/LI4lEU69Yh34G4b9YzUxgrSgQMPTMpztTzoXtdIytjMYr6UwlH+CMNQxI33p04UmV4c4KhKrNnWXmV0Y0Qpjp2+Tn4Jxg6iPNNNU5F0pt+m0NQ0ZDnuW+I0CKgjxYTYdwtu7QDmPF/5Z4CCYDVCqwot0zo=\"\r\n}");
+        // 요청 바디 생성 - APP_KEY와 APP_SECRET을 사용
+        String requestBodyContent = String.format(
+            "{\r\n    \"grant_type\": \"client_credentials\",\r\n    \"appkey\": \"%s\",\r\n    \"appsecret\": \"%s\"\r\n}", 
+            APP_KEY, 
+            APP_SECRET
+        );
+
+        RequestBody body = RequestBody.create(mediaType, requestBodyContent);
         
         // 요청 생성
         Request request = new Request.Builder()
@@ -268,28 +127,31 @@ public class SampleController {
             Response response = client.newCall(request).execute();
 
             if (response.isSuccessful()) {
-                // 응답 본문을 모델에 추가
+                // 응답 본문을 JSON 형태로 파싱하여 access_token 추출
                 String responseBody = response.body().string();
-                model.addAttribute("tokenDataP", responseBody);
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode rootNode = mapper.readTree(responseBody);
+                String accessToken = rootNode.path("access_token").asText();
+                AUTH_TOKEN = accessToken;
+                log.info(AUTH_TOKEN);
+                response.close();
+                return accessToken;  // access_token 값 반환
             } else {
-                model.addAttribute("tokenDataP", "Request failed: " + response.code());
+                response.close();
+                return "Request failed: " + response.code();  // 실패 시 오류 코드 반환
             }
 
-            response.close();
         } catch (IOException e) {
             log.error("Error occurred: " + e.getMessage(), e);
-            model.addAttribute("tokenDataP", "Error: " + e.getMessage());
+            return "Error: " + e.getMessage();  // 예외 발생 시 오류 메시지 반환
         }
-
-        // JSP로 전달
-        return "sample/tokenP";
     }
     @GetMapping("/chart")
     public String chart() {
         
-        return "sample/webSocket"; // stockPrice.jsp로 전달
+        return "stock/chart"; // stockPrice.jsp로 전달
     }
-    @GetMapping("/get-token-new")
+    @PostMapping("/get-token-new")
     public String getTokenNew(Model model) {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         MediaType mediaType = MediaType.parse("application/json");
@@ -319,11 +181,8 @@ public class SampleController {
             model.addAttribute("tokenData", "Error: " + e.getMessage());
         }
 
-        return "sample/token"; // token.jsp로 전달
+        return "stock/token"; // token.jsp로 전달
     }
-    private final String APP_KEY = "PSdTPt6Y6Y8jlz2bZavylela0LPunIuP9CAq"; // 실제 키로 교체 필요
-    private final String APP_SECRET = "5A9NiHMzRkPIxx6rujN5hkpZ/LI4lEU69Yh34G4b9YzUxgrSgQMPTMpztTzoXtdIytjMYr6UwlH+CMNQxI33p04UmV4c4KhKrNnWXmV0Y0Qpjp2+Tn4Jxg6iPNNNU5F0pt+m0NQ0ZDnuW+I0CKgjxYTYdwtu7QDmPF/5Z4CCYDVCqwot0zo="; // 실제 키로 교체 필요
-
     @GetMapping("/websocketTest")
     public String webSocketTest(Model model) {
         String approvalKey = getApprovalKey(APP_KEY, APP_SECRET);
@@ -332,9 +191,45 @@ public class SampleController {
         model.addAttribute("appsecret", APP_SECRET);
         model.addAttribute("approval_key", approvalKey);
         
-        return "sample/webSocket"; // JSP 파일명에 맞게 변경
+        return "stock/webSocket"; // JSP 파일명에 맞게 변경
     }
+    
+    @GetMapping("/getStockChartData")
+    public String getStockChartData(Model model) {
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+        MediaType mediaType = MediaType.parse("application/json");
+        String url = API_URL + "?FID_ETC_CLS_CODE=&FID_COND_MRKT_DIV_CODE=J&FID_INPUT_ISCD=005930&FID_INPUT_HOUR_1=094400&FID_PW_DATA_INCU_YN=Y";
+        
+        Request request = new Request.Builder()
+                .url(url)
+                .get() // GET 요청은 body 없이 사용
+                .addHeader("content-type", "application/json")
+                .addHeader("authorization", "Bearer " + AUTH_TOKEN)
+                .addHeader("appkey", APP_KEY)
+                .addHeader("appsecret", APP_SECRET)
+                .addHeader("tr_id", "FHKST03010200")
+                .build();
+        log.info(AUTH_TOKEN);
+        try {
+            Response response = client.newCall(request).execute();
 
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                model.addAttribute("chartData", responseBody);
+            } else {
+                log.error("Request failed: " + response.code() + " - " + response.message());
+                model.addAttribute("chartData", "Request failed: " + response.code());
+            }
+
+            response.close();
+        } catch (IOException e) {
+            log.error("Error occurred while getting stock chart data: " + e.getMessage(), e);
+            model.addAttribute("chartData", "Error: " + e.getMessage());
+        }
+
+        return "stock/chart"; // stockChart.jsp로 전달
+    }
+    
     private String getApprovalKey(String appKey, String appSecret) {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         MediaType mediaType = MediaType.parse("application/json");
