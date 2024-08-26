@@ -93,14 +93,14 @@ $(function() {
 <c:if test="${!empty login }">
 <script type="text/javascript">
 
-$(function() {
-	setInterval(function() {
-		// 서버에서 새로운 메세지 데이터를 가져와서 새로운 메세지란에 표시한다.
-		// console.log("3초마다 자동 실행");
-		// 새로운 메세지 표시라는 곳을 선택해서 데이터를 올린다.
-		$("#newMsgCnt").load("/ajax/getNewMsgCnt.do");
-	}, 3000);
-});
+// $(function() {
+// 	setInterval(function() {
+// 		// 서버에서 새로운 메세지 데이터를 가져와서 새로운 메세지란에 표시한다.
+// 		// console.log("3초마다 자동 실행");
+// 		// 새로운 메세지 표시라는 곳을 선택해서 데이터를 올린다.
+// 		$("#newMsgCnt").load("/ajax/getNewMsgCnt.do");
+// 	}, 3000);
+// });
 
 </script>
 </c:if>

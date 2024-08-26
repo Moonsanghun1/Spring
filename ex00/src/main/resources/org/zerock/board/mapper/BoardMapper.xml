@@ -12,7 +12,7 @@
 		  Select 
 		  		no, title, writer, writeDate, hit , (select count(*) from board_reply br where br.no = b.no) replyCnt
 		  from 
-		  		board 
+		  		board b
 		  	<!--  검색을 달아야 한다 -->
 		  	<include refid="search"/>
 		  	order by no desc

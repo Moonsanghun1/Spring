@@ -2,17 +2,17 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper namespace="org.zerock.board.mapper.BoardMapper">
+  <mapper namespace="org.zerock.member.mapper.MemberMapper">
   
-  <select id="list" resultType="org.zerock.board.vo.BoardVO">
+  <select id="list" resultType="org.zerock.member.vo.MemberVO">
   select rownum rnum, no, title, writer, writeDate, hit, replyCnt
   	from(
   		Select rownum rnum, no, title, writer, writeDate, hit, replyCnt
 	  	from(
 		  Select 
-		  		no, title, writer, writeDate, hit , (select count(*) from board_reply br where br.no = b.no) replyCnt
+		  		no, title, writer, writeDate, hit , (select count(*) from member_reply br where br.no = b.no) replyCnt
 		  from 
-		  		board b
+		  		member 
 		  	<!--  검색을 달아야 한다 -->
 		  	<include refid="search"/>
 		  	order by no desc
@@ -42,50 +42,56 @@
   <!-- 일반 게시판 글등록 -->
   <!--
   <select id="write">
-  insert into board(no ,title, content, writer,pw)
-  values(board_seq.nextval ,#{title},#{content},#{writer},#{pw})
+  insert into member(no ,title, content, writer,pw)
+  values(member_seq.nextval ,#{title},#{content},#{writer},#{pw})
   </select>
   -->
   
   <insert id="write">
   	<selectKey keyProperty="no" resultType="Long" order="BEFORE">
   	<!-- BoardVO의 no에 setter를 이용해서 시퀀스에서 받아온 번호를 세팅해 준다.  -->
-  	select board_seq.nextval from dual
+  	select member_seq.nextval from dual
   	</selectKey>
-  	insert into board(no, title, content, writer, pw)
+  	insert into member(no, title, content, writer, pw)
  	 values(#{no}, #{title}, #{content}, #{writer}, #{pw})
   </insert>
   <!-- 트랜젝션 처리 테스트를 위한 쿼리 - 같은 no의 데이터를 등록 시도 -->
   <!--  
   <insert id="writeTx">
-  	insert into board(no, title, content, writer, pw)
+  	insert into member(no, title, content, writer, pw)
  	 values(#{no}, #{title}, #{content}, #{writer}, #{pw})
   </insert>
   -->
   <select id="getTotalRow" resultType="Long">
- select count(*) from board
+ select count(*) from member
  <include refid="search"/>
   </select>
   
-  <select id="view" resultType="org.zerock.board.vo.BoardVO">
+  <select id="view" resultType="org.zerock.member.vo.MemberVO">
 		 Select 
 		  		no, title,content, writer, writeDate, hit 
 		  from 
-		  		board where no = #{no}
+		  		member where no = #{no}
   </select>
   
   <select id="inc">
-		update board set hit = hit + 1 where no = #{no}
+		update member set hit = hit + 1 where no = #{no}
   </select>
   <update id="update">
     <![CDATA[
-		update board set title = #{title}, content = #{content}, writer = #{writer} where no = #{no} and pw	 = #{pw}
+		update member set title = #{title}, content = #{content}, writer = #{writer} where no = #{no} and pw	 = #{pw}
 	]]>
   </update>
   <delete id="delete">
     <![CDATA[
-		delete from board where no = #{no} and pw = #{pw}
+		delete from member where no = #{no} and pw = #{pw}
 	]]>
   </delete>
+  
+  <!-- 회원관리 로그인 -->
+    <select id="login" resultType="org.zerock.member.vo.LoginVO">
+		 select m.id, m.name, m.photo, m.newMsgCnt, m.gradeNo, g.gradeName
+from member m, grade g where (m.id = #{id} and m.pw = #{pw}) and (m.gradeNo = g.gradeNo)
+  </select>
   
   </mapper>
