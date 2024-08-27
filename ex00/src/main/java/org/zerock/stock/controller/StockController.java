@@ -30,7 +30,7 @@ public class StockController {
     private final String API_URL = "https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/quotations/inquire-time-itemchartprice";
     private final String APP_KEY = "PSdTPt6Y6Y8jlz2bZavylela0LPunIuP9CAq"; // 실제 키로 교체 필요
     private final String APP_SECRET = "5A9NiHMzRkPIxx6rujN5hkpZ/LI4lEU69Yh34G4b9YzUxgrSgQMPTMpztTzoXtdIytjMYr6UwlH+CMNQxI33p04UmV4c4KhKrNnWXmV0Y0Qpjp2+Tn4Jxg6iPNNNU5F0pt+m0NQ0ZDnuW+I0CKgjxYTYdwtu7QDmPF/5Z4CCYDVCqwot0zo="; // 실제 키로 교체 필요
-    private String AUTH_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6IjQxNDZlZmUxLWMyYjQtNDE4Ni04YjkzLWM2ZjU3MWY5YjEzOSIsInByZHRfY2QiOiIiLCJpc3MiOiJ1bm9ndyIsImV4cCI6MTcyNDc0MDU4NSwiaWF0IjoxNzI0NjU0MTg1LCJqdGkiOiJQU2RUUHQ2WTZZOGpsejJiWmF2eWxlbGEwTFB1bkl1UDlDQXEifQ.Kl9TOQMOaEOtfTlqiOb-78MtgP8e104-Og4E0c2nWj4NvcsCblFI9aAkm-QI27_JBsZ-6oSsrMKgSdXvBEWvrg";
+    private String AUTH_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6ImQyNTA1YjEzLTkzMjMtNDNiNy05YTdlLTJhZTczNzBmYTIxYiIsInByZHRfY2QiOiIiLCJpc3MiOiJ1bm9ndyIsImV4cCI6MTcyNDgzNDA4NywiaWF0IjoxNzI0NzQ3Njg3LCJqdGkiOiJQU2RUUHQ2WTZZOGpsejJiWmF2eWxlbGEwTFB1bkl1UDlDQXEifQ.N6KP04-MNguns0xnZl7jrgWU7BOmbIFnq1SOsa-ZhR599q9iDKg6ksPlNnDeLb23fWaP6mhx8yS4F_W5XuDyjQ";
 
     @GetMapping("/stock-price")
     public String getStockPrice(Model model) {
@@ -192,6 +192,11 @@ public class StockController {
         model.addAttribute("approval_key", approvalKey);
         
         return "stock/webSocket"; // JSP 파일명에 맞게 변경
+    }
+    
+    @GetMapping("/stockMain")
+    public void stockMain(Model model) {
+
     }
     
     @GetMapping("/getStockChartData")
