@@ -16,6 +16,7 @@
 		<pattern>/playlist/*</pattern>
 		<pattern>/cartalbum/*</pattern>
 		<pattern>/board/*</pattern>
+		<pattern>/category/*</pattern>
 		
 	</decorator>
 	

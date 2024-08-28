@@ -3,6 +3,8 @@ package org.zerock.stock.controller;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -102,7 +104,7 @@ public class StockController {
     }
     // 접근토큰발급
     @GetMapping("/get-token-p")
-    public String getTokenP() {
+    public String getTokenP(HttpSession session) {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         MediaType mediaType = MediaType.parse("application/json");
 
@@ -132,7 +134,7 @@ public class StockController {
                 ObjectMapper mapper = new ObjectMapper();
                 JsonNode rootNode = mapper.readTree(responseBody);
                 String accessToken = rootNode.path("access_token").asText();
-                AUTH_TOKEN = accessToken;
+                session.setAttribute("token", accessToken);
                 log.info(AUTH_TOKEN);
                 response.close();
                 return accessToken;  // access_token 값 반환
@@ -199,22 +201,24 @@ public class StockController {
 
     }
     
-    @GetMapping("/getStockChartData")
-    public String getStockChartData(Model model) {
+    @GetMapping("/0")
+    public String getStockChartData(Model model, HttpSession session) {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         MediaType mediaType = MediaType.parse("application/json");
+        String token= (String) session.getAttribute("token");
         String url = API_URL + "?FID_ETC_CLS_CODE=&FID_COND_MRKT_DIV_CODE=J&FID_INPUT_ISCD=005930&FID_INPUT_HOUR_1=094400&FID_PW_DATA_INCU_YN=Y";
         
         Request request = new Request.Builder()
                 .url(url)
                 .get() // GET 요청은 body 없이 사용
                 .addHeader("content-type", "application/json")
-                .addHeader("authorization", "Bearer " + AUTH_TOKEN)
+                .addHeader("authorization", "Bearer " + token)
                 .addHeader("appkey", APP_KEY)
                 .addHeader("appsecret", APP_SECRET)
                 .addHeader("tr_id", "FHKST03010200")
                 .build();
         log.info(AUTH_TOKEN);
+        log.info(token);
         try {
             Response response = client.newCall(request).execute();
 
