@@ -30,8 +30,7 @@ public class CategoryServiceImpl implements CategoryService{
 		// 게시글 전체 개수 구하기
 		return mapper.list(cate_code1);
 	}
-	// @Transactional - isert 2번이 성공을 해야 commit한다. 한개라도 오류가 나면 rollback.
-	@Transactional 
+
 	@Override
 	public Integer write(CategoryVO vo) {
 		
@@ -48,7 +47,6 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 	@Override
 	public Integer delete(CategoryVO vo) {
-		log.info("delete() 실행");
 		return mapper.delete(vo);
 	}
 }

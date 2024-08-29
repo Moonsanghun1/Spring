@@ -18,25 +18,7 @@
   		</if>		
   		order by cate_code1, cate_code2
   </select>
-  
-  <sql id="search">
-	  <if test="word !=null and word != ''.toString()">
-	  	where 
-	  	<trim prefixOverrides="or">
-	  		<!-- 'test' : 문자열(String), 't' : 문자(char) -> 문자열 - toStirng() 사용 -->
-	  		<if test="key.indexOf('t') >= 0">
-	  			or title like '%' || #{word} || '%'
-	  		</if>
-	  		<if test="key.indexOf('c') >= 0">
-	  			or content like '%' || #{word} || '%'
-	  		</if>
-	  		<if test="key.indexOf('w') >= 0">
-	  			or writer like '%' || #{word} || '%'
-	  		</if>
-	  	</trim>
-	  </if>	
-  </sql>
-  
+
   <!-- 카테고리 등록 -->
   <!-- 카테고리 대분류 등록 -->
   <insert id="writeMaj">
@@ -47,18 +29,22 @@
   <!-- 카테고리 중분류 등록 -->
   <insert id="writeMid">
     insert into category(cate_code1, cate_code2, cate_name)
-    values(#{cate_code1}, (select NVL(max(cate_code2), 0) + 1 from category ), #{cate_name})
+    values(#{cate_code1}, (select NVL(max(cate_code2), 0) + 1 from category where cate_code1=#{cate_code1}), #{cate_name})
   </insert>
 
   <update id="update">
     <![CDATA[
-		update category set title = #{title}, content = #{content}, writer = #{writer} where no = #{no} and pw	 = #{pw}
+		update category set cate_name = #{cate_name} where cate_code1 = #{cate_code1} and cate_code2 = #{cate_code2}
 	]]>
   </update>
   <delete id="delete">
-    <![CDATA[
-		delete from category where no = #{no} and pw = #{pw}
-	]]>
+    
+		delete from category where cate_code1 = #{cate_code1}
+		<if test="cate_code2!=0">
+			and cate_code2 = #{cate_code2}
+		</if>
+	
   </delete>
+
   
   </mapper>

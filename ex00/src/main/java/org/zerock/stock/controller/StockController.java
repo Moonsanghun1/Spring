@@ -102,7 +102,7 @@ public class StockController {
         // JSP로 전달
         return "stock/token";
     }
-    // 접근토큰발급
+    // 접근토큰발급 세션에 집어넣는다.
     @GetMapping("/get-token-p")
     public String getTokenP(HttpSession session) {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
@@ -148,43 +148,8 @@ public class StockController {
             return "Error: " + e.getMessage();  // 예외 발생 시 오류 메시지 반환
         }
     }
-    @GetMapping("/chart")
-    public String chart() {
-        
-        return "stock/chart"; // stockPrice.jsp로 전달
-    }
-    @PostMapping("/get-token-new")
-    public String getTokenNew(Model model) {
-        OkHttpClient client = new OkHttpClient().newBuilder().build();
-        MediaType mediaType = MediaType.parse("application/json");
 
-        RequestBody body = RequestBody.create(mediaType, 
-            "{\r\n    \"grant_type\": \"client_credentials\",\r\n" +
-            "    \"appkey\": \"PSdTPt6Y6Y8jlz2bZavylela0LPunIuP9CAq\",\r\n" +
-            "    \"secretkey\": \"5A9NiHMzRkPIxx6rujN5hkpZ/LI4lEU69Yh34G4b9YzUxgrSgQMPTMpztTzoXtdIytjMYr6UwlH+CMNQxI33p04UmV4c4KhKrNnWXmV0Y0Qpjp2+Tn4Jxg6iPNNNU5F0pt+m0NQ0ZDnuW+I0CKgjxYTYdwtu7QDmPF/5Z4CCYDVCqwot0zo=\"\r\n}");
 
-        Request request = new Request.Builder()
-                .url("https://openapivts.koreainvestment.com:29443/oauth2/Approval")
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .build();
-
-        try {
-            Response response = client.newCall(request).execute();
-            if (response.isSuccessful()) {
-                String responseBody = response.body().string();
-                model.addAttribute("tokenData", responseBody);
-            } else {
-                model.addAttribute("tokenData", "Request failed: " + response.code());
-            }
-            response.close();
-        } catch (IOException e) {
-            log.error("Error occurred: " + e.getMessage(), e);
-            model.addAttribute("tokenData", "Error: " + e.getMessage());
-        }
-
-        return "stock/token"; // token.jsp로 전달
-    }
     @GetMapping("/websocketTest")
     public String webSocketTest(Model model) {
         String approvalKey = getApprovalKey(APP_KEY, APP_SECRET);

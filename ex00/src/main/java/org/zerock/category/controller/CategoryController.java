@@ -42,21 +42,23 @@ public class CategoryController {
 		//request.setAttribute("list", service.list());
 		model.addAttribute("majList", majList);
 		model.addAttribute("midList", midList);
-
+		
+		// 중분류 추가에 cate_code1이 필요하다.
+		model.addAttribute("cate_code1", cate_code1);
+		
 		return "category/list";
 		
 
 	}
 
-	// 카테고리 글 등록 폼
+	// 카테고리 글 등록 폼 : 대분류와 중분류 같이 사용
 	@PostMapping("/write.do")
 	public String write(CategoryVO vo, RedirectAttributes rttr) {
-		log.info("CategoryController.write()");
-		log.info(vo);
+
 		service.write(vo);
 		// 처리 결과에 대한 메시지 처리
-		rttr.addFlashAttribute("msg", "일반 게시판 글등록이 되었습니다.");
-		return "redirect:list.do";
+		rttr.addFlashAttribute("msg", "카테고리 등록이 되었습니다.");
+		return "redirect:list.do?cate_code1=" + vo.getCate_code1();
 	}
 
 	// 카테고리 글 수정 폼
@@ -64,21 +66,22 @@ public class CategoryController {
 	public String update(CategoryVO vo, RedirectAttributes rttr) {
 		log.info("CategoryController.update()");
 		if(service.update(vo)==1)
-			rttr.addFlashAttribute("msg", "일반 게시판 글 수정이 되었습니다.");
+			rttr.addFlashAttribute("msg", "카테고리 수정이 되었습니다.");
 		else	{
-			rttr.addFlashAttribute("msg", "일반 게시판 글수정이 되지 않았습니다. 글번호나 비밀번호가 맞지 않습니다. 다시 확인하고 시도해 주세요.");}
+			rttr.addFlashAttribute("msg", "카테고리 수정이 되지 않았습니다.");}
 		
-		return "redirect:list.do";
+		return "redirect:list.do?cate_code1="+vo.getCate_code1();
 	}
 	@PostMapping("/delete.do")
 	public String delete(CategoryVO vo, RedirectAttributes rttr) {
-		log.info("CategoryController.delete()");
-		if(service.delete(vo)==1)
-			rttr.addFlashAttribute("msg", "일반 게시판 글 삭제가 되었습니다.");
-		else	{
-			rttr.addFlashAttribute("msg", "일반 게시판 글 삭제가 되지 않았습니다. 글번호나 비밀번호가 맞지 않습니다. 다시 확인하고 시도해 주세요.");}
 		
-		return "redirect:list.do";
-	}
+		if(service.delete(vo) >=1) {
+			rttr.addFlashAttribute("msg", "일반 게시판 글 삭제가 되었습니다.");
+		}
+		else	{
+			rttr.addFlashAttribute("msg", "일반 게시판 글 삭제가 되지 않았습니다.");
+		}
+		return "redirect:list.do"+((vo.getCate_code2()>0)?("?cate_code1=" + vo.getCate_code1()):"");
+		}
 	
 }
