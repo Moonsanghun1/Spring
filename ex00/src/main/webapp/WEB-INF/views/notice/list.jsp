@@ -30,7 +30,7 @@
 			
 			
 			let no = $(this).data("no");
-			location = "view.do?no="+no+"&inc=1";
+			location = "view.do?no="+no;
 		});
 	})
 	

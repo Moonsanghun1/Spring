@@ -9,6 +9,8 @@ public interface NoticeMapper {
 	
 	
 	public List<NoticeVO> list();
+	public NoticeVO view(Long no);
+	public Integer write(NoticeVO vo);
 	
 
 

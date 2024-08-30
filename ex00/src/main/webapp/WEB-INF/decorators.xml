@@ -17,6 +17,7 @@
 		<pattern>/cartalbum/*</pattern>
 		<pattern>/board/*</pattern>
 		<pattern>/category/*</pattern>
+		<pattern>/goods/*</pattern>
 		
 	</decorator>
 	

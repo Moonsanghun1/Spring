@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="org.zerock.goods.mapper.GoodsMapper">
+  
+  <select id="list" resultType="org.zerock.goods.vo.GoodsVO">
+  select goods_no, goods_name, price, discount, discount_rate, hit, image_name, saved_rate
+  	from(
+  		Select rownum rnum, goods_no, goods_name, price, discount, discount_rate, hit, image_name, saved_rate
+	  	from(
+		  Select 
+		  		g.goods_no, g.goods_name, p.price, p.discount, p.discount_rate, g.hit, g.image_name, p.saved_rate
+		  from 
+		  		goods g, price p
+		  	where
+		  		(<!-- 일반조건. -->
+			  		<!-- 현재 판매되고 있는 물건 - 가격 정보가 현재 가격으로 존재한다. -->
+					<![CDATA[ 
+					sale_startDate <= trunc(sysdate)
+					and trunc(sysdate) <= sale_endDate
+					]]>
+				  	<!--  검색을 달아야 한다 -->
+				  	<include refid="search"/>
+				)
+				and
+				(<!-- JOIN 조건, -->
+					g.goods_no = p.goods_no
+				)
+				
+		  	order by g.goods_no desc
+	  	)
+	)
+	where rnum between #{startRow} and #{endRow}
+  </select>
+  
+  <sql id="search">
+	  <if test="word !=null and word != ''.toString()">
+	  	where 
+	  	<trim prefixOverrides="or">
+	  		<!-- 'test' : 문자열(String), 't' : 문자(char) -> 문자열 - toStirng() 사용 -->
+	  		<if test="key.indexOf('t') >= 0">
+	  			or title like '%' || #{word} || '%'
+	  		</if>
+	  		<if test="key.indexOf('c') >= 0">
+	  			or content like '%' || #{word} || '%'
+	  		</if>
+	  		<if test="key.indexOf('w') >= 0">
+	  			or writer like '%' || #{word} || '%'
+	  		</if>
+	  	</trim>
+	  </if>	
+  </sql>
+  
+  <!-- 일반 게시판 글등록 -->
+  <!--
+  <select id="write">
+  insert into goods(no ,title, content, writer,pw)
+  values(goods_seq.nextval ,#{title},#{content},#{writer},#{pw})
+  </select>
+  -->
+  
+  <insert id="write">
+  	<selectKey keyProperty="no" resultType="Long" order="BEFORE">
+  	<!-- GoodsVO의 no에 setter를 이용해서 시퀀스에서 받아온 번호를 세팅해 준다.  -->
+  	select goods_seq.nextval from dual
+  	</selectKey>
+  	insert into goods(no, title, content, writer, pw)
+ 	 values(#{no}, #{title}, #{content}, #{writer}, #{pw})
+  </insert>
+
+  <select id="getTotalRow" resultType="Long">
+ select count(*) from goods
+ <!-- 검색을 달아야 한다. -->
+ where 1=1 
+ <include refid="search"/>
+  </select>
+  
+  <select id="view" resultType="org.zerock.goods.vo.GoodsVO">
+		 Select 
+		  		no, title,content, writer, writeDate, hit 
+		  from 
+		  		goods where no = #{no}
+  </select>
+  
+  <select id="inc">
+		update goods set hit = hit + 1 where no = #{no}
+  </select>
+  <update id="update">
+    <![CDATA[
+		update goods set title = #{title}, content = #{content}, writer = #{writer} where no = #{no} and pw	 = #{pw}
+	]]>
+  </update>
+  <delete id="delete">
+    <![CDATA[
+		delete from goods where no = #{no} and pw = #{pw}
+	]]>
+  </delete>
+  
+  </mapper>

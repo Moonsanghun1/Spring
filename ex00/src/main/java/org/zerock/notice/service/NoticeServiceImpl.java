@@ -32,6 +32,18 @@ public class NoticeServiceImpl implements NoticeService{
 		
 		return mapper.list();
 	}
+
+	@Override
+	public NoticeVO view(Long no) {
+		// TODO Auto-generated method stub
+		return mapper.view(no);
+	}
+
+	@Override
+	public Integer write(NoticeVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.write(vo);
+	}
 	
 
 	

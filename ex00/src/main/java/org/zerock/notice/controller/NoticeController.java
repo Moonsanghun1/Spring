@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.zerock.notice.service.NoticeService;
+import org.zerock.notice.vo.NoticeVO;
 
 import lombok.extern.log4j.Log4j;
 
@@ -25,5 +27,25 @@ public class NoticeController {
 		model.addAttribute("list", service.list());
 		
 		return "notice/list";
+	}
+	@GetMapping("/view.do")
+	public String view(Model model, Long no) throws Exception{
+		
+		model.addAttribute("vo", service.view(no));
+		
+		return "notice/view";
+	}
+	
+	@GetMapping("/writeForm.do")
+	public String writeForm(Model model) throws Exception{
+		
+		return "notice/writeForm";
+	}
+	@PostMapping("/write.do")
+	public String write(Model model, NoticeVO vo) throws Exception{
+		
+		Object result = service.write(vo);
+		Long no = vo.getNo();
+		return "redirect:notice/view?no="+no;
 	}
 }
