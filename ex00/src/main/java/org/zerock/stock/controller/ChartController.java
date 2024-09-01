@@ -1,7 +1,6 @@
 package org.zerock.stock.controller;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -10,9 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.zerock.stock.vo.StockVO;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.log4j.Log4j;
 import okhttp3.MediaType;

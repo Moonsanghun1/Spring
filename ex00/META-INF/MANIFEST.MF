@@ -24,3 +24,4 @@ Export-Package: com.webjjang.util.page,
  org.zerock.notice.vo,
  org.zerock.persistence,
  org.zerock.sample
+Import-Package: org.apache.log4j

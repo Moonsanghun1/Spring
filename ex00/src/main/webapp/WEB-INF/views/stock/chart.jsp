@@ -47,9 +47,9 @@
         // chartData.output2 데이터를 이용해 차트를 그리기
         var rawData = chartData.output2.map(item => {
             return [
-            	formatDate(item.stck_bsop_date, item.stck_cntg_hour),
+            	formatDate(item.stck_bsop_date),
+                parseFloat(item.stck_clpr),
                 parseFloat(item.stck_oprc),
-                parseFloat(item.stck_prpr),
                 parseFloat(item.stck_lwpr),
                 parseFloat(item.stck_hgpr),
                 parseFloat(item.cntg_vol)
