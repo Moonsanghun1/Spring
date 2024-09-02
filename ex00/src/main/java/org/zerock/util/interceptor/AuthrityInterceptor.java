@@ -19,17 +19,17 @@ public class AuthrityInterceptor extends HandlerInterceptorAdapter{
 	// 권한 정보를 등록하는 초기화 블록
 	{	
 		
-		// 등급이 1이면 로그인 필요, 등급이 9면 로그인 & 관리자
-		// 댓글
-		authMap.put("/boardreply/write.do", 1);
-		
-		// 상품관리 - 페이지 권한
-		authMap.put("/goods/writeForm.do", 9);
-		authMap.put("/goods/write.do", 9);
-		authMap.put("/goods/updateForm.do", 9);
-		authMap.put("/goods/update.do", 9);
-		authMap.put("/goods/delete.do", 9);
-		authMap.put("/goods/changeImage.do", 9);
+//		// 등급이 1이면 로그인 필요, 등급이 9면 로그인 & 관리자
+//		// 댓글
+//		authMap.put("/boardreply/write.do", 1);
+//		
+//		// 상품관리 - 페이지 권한
+//		authMap.put("/goods/writeForm.do", 9);
+//		authMap.put("/goods/write.do", 9);
+//		authMap.put("/goods/updateForm.do", 9);
+//		authMap.put("/goods/update.do", 9);
+//		authMap.put("/goods/delete.do", 9);
+//		authMap.put("/goods/changeImage.do", 9);
 		
 		// 회원관리
 		authMap.put("/member/logout.do", 1);

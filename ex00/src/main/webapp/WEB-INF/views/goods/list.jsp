@@ -185,10 +185,10 @@ $(function() {
 	<div> 
 	<pageNav:pageNav listURI="list.do" pageObject="${pageObject }"></pageNav:pageNav>
 	</div>
-	<c:if test="${!empty login }">
+<%-- 	<c:if test="${!empty login }"> --%>
 	<!-- 로그인이 되어있으면 보이게 하자. -->
 	<a href="writeForm.do?perPageNum=${pageObject.perPageNum }"><button class="btn btn-primary">등록</button></a>
-	</c:if>
+<%-- 	</c:if> --%>
 </div>
 </body>
 </html>

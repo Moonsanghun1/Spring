@@ -2,6 +2,8 @@ package org.zerock.goods.vo;
 
 import java.sql.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -12,6 +14,7 @@ public class GoodsVO {
 	private String goods_name;
 	private String content; // 보기에 나타날 상세 설명 텍스트
 	private String detail_image_name;// 보기에 나타날 상세 설명 이미지
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date product_date;
 	private String company;
 	private String image_name; // 리스트에 나타날 대표이미지 

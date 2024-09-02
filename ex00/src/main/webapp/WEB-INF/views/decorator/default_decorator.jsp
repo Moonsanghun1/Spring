@@ -30,6 +30,13 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <style type="text/css">
 .container{
 	padding: 30px 5px;
@@ -77,8 +84,7 @@ article {
 
 
 </style>
-<!-- 개발자가 작성한 소스의 head 태그를 여기에 넣게 된다. title은 제외 -->
-<decorator:head />
+
 
 <script type="text/javascript">
 
@@ -86,6 +92,20 @@ $(function() {
 	$(".cancelBtn").click(function() {
 		history.back();
 	});
+	
+	$(".datepicker").datepicker({
+
+	   changeMonth: true,
+
+	   changeYear: true,
+
+	   dateFormat: "yy-mm-dd",
+
+	   dayNamesMin: [ "일", "월", "화", "수", "목", "금", "토" ],
+
+	   monthNamesShort: [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월" ],
+
+	   });
 });
 
 </script>
@@ -104,6 +124,10 @@ $(function() {
 
 </script>
 </c:if>
+
+<!-- 개발자가 작성한 소스의 head 태그를 여기에 넣게 된다. title은 제외 -->
+<decorator:head />
+
 </head>
 <body>
 	<header>

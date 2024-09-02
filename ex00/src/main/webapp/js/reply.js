@@ -71,7 +71,10 @@
  		$.ajax({
  			type : "post", // 데이터 전송 방식
  			url : "/boardreply/update.do",
- 			data : JSON.stringify(reply), // 서버에 전송되는 데이터
+ 	        data : {
+        		seq : seq,
+        		type : type
+            },
  			contentType : "application/json; charset=UTF-8",
  			// 성공했을 때 함수
  			success : function(result, status, xhr) {

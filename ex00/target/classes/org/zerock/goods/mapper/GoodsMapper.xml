@@ -97,4 +97,19 @@
 	]]>
   </delete>
   
+  <!-- 대분류 가져오기 -->
+  <select id="getCategory" resultType="org.zerock.goods.vo.CategoryVO">
+		 Select 
+		  	cate_code1, cate_code2, cate_name
+		 from category
+		 	where 
+		 	<if test="cate_code1 ==0">
+		 		cate_code2 = 0
+		 	</if>
+		 	<if test="cate_code1 != 0">
+		 		cate_code1 = #{cate_code1} and cate_cate2 != 0
+		 	</if>
+  </select>
+  <!-- 중분류 가져오기 -->
+  
   </mapper>

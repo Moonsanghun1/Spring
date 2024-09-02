@@ -298,8 +298,33 @@
         );
 
         option && myChart.setOption(option);
+        
+//         $.ajax({
+//  			type : "post", // 데이터 전송 방식
+//  			url : "/chart/chart.do",
+//  			data : JSON.stringify(reply), // 서버에 전송되는 데이터
+//  			contentType : "application/json; charset=UTF-8",
+//  			// 성공했을 때 함수
+//  			success : function(result, status, xhr) {
+//  				if(callback)
+//  					callback(result);
+//  					else alert(result);
+ 				
+//  			},
+//  			// 실패했을 때 함수
+//  			error : function(xhr, status, er) {
+//  				console.log("xhr : " + xhr);
+//  				console.log("status : " + status);
+//  				console.log("er : " + er);
+//  				if(error){
+//  					error(er);
+//  				}	
+//  				else alert("댓글 수정에 실패했습니다");
+//  			}
+//  		});
     </script>
-    
+
+  <div class="container">
   <div class="form-check">
   <label class="form-check-label">
     <input type="radio" class="form-check-input" name="optradio">일봉
@@ -310,10 +335,12 @@
     <input type="radio" class="form-check-input" name="optradio">주봉
   </label>
 </div>
-<div class="form-check disabled">
+<div class="form-check">
   <label class="form-check-label">
     <input type="radio" class="form-check-input" name="optradio">월봉
   </label>
 </div>
+</div>  
+
 </body>
 </html>

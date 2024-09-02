@@ -36,16 +36,18 @@ public class ChartController {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         MediaType mediaType = MediaType.parse("application/json");
         String token= (String) session.getAttribute("token");
-        
+        int code = vo.getCompany_id();
+        String formattedCode = String.format("%06d", code);
+        log.info(vo);
         RequestBody body = RequestBody.create(mediaType, "");
         Request request = new Request.Builder()
         		  .url("https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/quotations/"
         		  		+ "inquire-daily-itemchartprice?"
         		  		+ "fid_cond_mrkt_div_code=J"
-        		  		+ "&fid_input_iscd=005930"
-        		  		+ "&fid_input_date_1=20220101"
-        		  		+ "&fid_input_date_2=20240829"
-        		  		+ "&fid_period_div_code=W"
+        		  		+ "&fid_input_iscd="+formattedCode
+        		  		+ "&fid_input_date_1="+vo.getStartDate()
+        		  		+ "&fid_input_date_2="+vo.getEndDate()
+        		  		+ "&fid_period_div_code="+vo.getPeriod_div_code()
         		  		+ "&fid_org_adj_prc=1")
         		  .get() // GET 요청은 body 없이 사용
         		  .addHeader("content-type", "application/json")

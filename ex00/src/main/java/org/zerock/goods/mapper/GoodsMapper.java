@@ -2,7 +2,9 @@ package org.zerock.goods.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.zerock.category.vo.CategoryVO;
 import org.zerock.goods.vo.GoodsVO;
 
 import com.webjjang.util.page.PageObject;
@@ -24,6 +26,7 @@ public interface GoodsMapper {
 	public Integer update(GoodsVO vo);
 	
 	public Integer delete(GoodsVO vo);
+	
 	
 	// 상품 이미지 추가
 	// 상품 이미지 변경
