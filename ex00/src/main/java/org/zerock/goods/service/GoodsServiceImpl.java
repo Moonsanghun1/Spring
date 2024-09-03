@@ -7,9 +7,10 @@ import javax.inject.Inject;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.zerock.category.vo.CategoryVO;
 import org.zerock.goods.mapper.GoodsMapper;
+import org.zerock.goods.vo.ColorVO;
 import org.zerock.goods.vo.GoodsVO;
+import org.zerock.goods.vo.SizeVO;
 
 import com.webjjang.util.page.PageObject;
 
@@ -61,4 +62,15 @@ public class GoodsServiceImpl implements GoodsService{
 		return mapper.delete(vo);
 	}
 
+	// 상품 사이즈 가져오기
+	@Override
+	public List<SizeVO> getSize(Integer cate_code1) {
+		return mapper.getSize(cate_code1);
+	}
+
+	// 상품 색상 가져오기
+	@Override
+	public List<ColorVO> getColor(Integer cate_code1) {
+		return mapper.getColor(cate_code1);
+	}
 }

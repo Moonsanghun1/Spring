@@ -97,19 +97,18 @@
 	]]>
   </delete>
   
-  <!-- 대분류 가져오기 -->
-  <select id="getCategory" resultType="org.zerock.goods.vo.CategoryVO">
-		 Select 
-		  	cate_code1, cate_code2, cate_name
-		 from category
-		 	where 
-		 	<if test="cate_code1 ==0">
-		 		cate_code2 = 0
-		 	</if>
-		 	<if test="cate_code1 != 0">
-		 		cate_code1 = #{cate_code1} and cate_cate2 != 0
-		 	</if>
-  </select>
-  <!-- 중분류 가져오기 -->
+	<!-- 사이즈 가져오기 -->
+	 <select id="getSize" resultType="org.zerock.goods.vo.SizeVO">
+	 	select size_no, cate_code1, cate_code2, size_Name
+	 	from basic_size
+	 	where cate_code1 = #{cate_code1}
+	 </select>
+	<!-- 컬러 가져오기 -->
+	<select id="getColor" resultType="org.zerock.goods.vo.ColorVO">
+	 	select color_no, cate_code1, cate_code2, color_Name
+	 	from basic_color
+	 	where cate_code1 = #{cate_code1}
+	 </select>
+	
   
   </mapper>

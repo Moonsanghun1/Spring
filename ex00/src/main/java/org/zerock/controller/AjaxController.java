@@ -19,7 +19,7 @@ public class AjaxController {
 	// Type이 같으면 식별할 수 있는 문자열 지정 - id를 지정
 	@Autowired
 	@Qualifier("goodsServiceImpl")
-	private GoodsService service;
+	private GoodsService goodsService;
 	
 	@Autowired
 	@Qualifier("categoryServiceImpl")
@@ -32,5 +32,23 @@ public class AjaxController {
 		// midList.jsp에 select tag 작성 
 		return "goods/midList";
 	}
+	// 사이즈 가져오기
+	@GetMapping("/getSize.do")
+	public String getSize(Model model, Integer cate_code1) {
+		// 대분류를 가져와서 JSP로 넘기기
+		model.addAttribute("sizeList", goodsService.getSize(cate_code1));
+		// midList.jsp에 select tag 작성 
+		return "goods/sizeList";
+	}
+	
+	// 색상 가져오기
+	@GetMapping("/getColor.do")
+	public String getColor(Model model, Integer cate_code1) {
+		// 대분류를 가져와서 JSP로 넘기기
+		model.addAttribute("colorList", goodsService.getColor(cate_code1));
+		// midList.jsp에 select tag 작성 
+		return "goods/colorList";
+	}
+
 	
 }
