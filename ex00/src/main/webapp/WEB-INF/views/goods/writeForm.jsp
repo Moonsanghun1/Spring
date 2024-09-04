@@ -71,7 +71,7 @@ $(function() { // HTML 문서가 로딩이 다 되면 실행해라
 	
 	let appendOptionTag="";
 	appendOptionTag += "<div class=\"input-group mb-3\">";
-	appendOptionTag += "<input class=\"form-control\" type=\"text\" name=\"option_name\"> ";
+	appendOptionTag += "<input class=\"form-control\" type=\"text\" name=\"option_names\"> ";
 	appendOptionTag += "<div class=\"input-group-append\">";
 	appendOptionTag += "	<button type=\"button\" class=\"btn btn-danger removeOptionBtn\">";
 	appendOptionTag += "     	<i class=\"fa fa-close\"></i>";
@@ -163,7 +163,7 @@ $(function() { // HTML 문서가 로딩이 다 되면 실행해라
 	
 	<div class= "form-group">
 		<label for="detail_image_name">상세 설명 이미지</label>
-		<input class = "form-control" type="file" id="detail_image_name" name="detail_image_name" required>
+		<input class = "form-control" type="file" id="detailImageFile" name="detailImageFile" required>
 	</div>
 	
 	<div class= "form-group">
@@ -173,7 +173,7 @@ $(function() { // HTML 문서가 로딩이 다 되면 실행해라
 	
 	<div class= "form-group">
 		<label for="image_name">대표 이미지</label>
-		<input class = "form-control" type="file" id="image_name" name="image_name" required>
+		<input class = "form-control" type="file" id="imageFile" name="imageFile" required>
 	</div>
 	</fieldset>
 	<!-- 상품 기본 정보 입력 끝 -->
@@ -189,11 +189,11 @@ $(function() { // HTML 문서가 로딩이 다 되면 실행해라
 	</div>
 	<div class= "form-group">
 		<label for="discount">할인가</label>
-		<input class = "form-control" type="text"  name="discount" id="discount" required>
+		<input class = "form-control" type="text"  name="discount" id="discount" >
 	</div>
 	<div class= "form-group">
 		<label for="discount_rate">할인율</label>
-		<input class = "form-control" type="text"  name="discount_rate" id="discount_rate" required>
+		<input class = "form-control" type="text"  name="discount_rate" id="discount_rate" >
 	</div>
 	<div class= "form-group">
 		<label for="delivery_charge">배송료</label>
@@ -206,15 +206,16 @@ $(function() { // HTML 문서가 로딩이 다 되면 실행해라
 	
 	<div class= "form-group">
 		<label for="sale_startDate">판매 시작일</label>
-		<input class = "form-control datepicker" type="text"  name="sale_startDate" id="sale_startDate" required readonly> 
+		<input class = "form-control datepicker"  name="sale_startDate" id="sale_startDate" required readonly> 
 	</div>
 	<div class= "form-group">
 		<label for="sale_endDate">판매 종료일</label>
-		<input class = "form-control datepicker" type="text"  name="sale_endDate" id="sale_endDate" required readonly> 
+		<input class = "form-control datepicker" name="sale_endDate" id="sale_endDate" required readonly> 
 	</div>
 	</fieldset>
 	<!-- 가격 정보 입력 끝 -->
 	<fieldset class="border p-4">
+		<!-- px-# : padding 왼쪽 오른쪽 상대적인 설정 (참고:pl-#,pr-#,pt-#,pb-#,py-#) -->
 	    <legend class="w-auto px-2"><b style="fron-size: 14pt;">[상품 옵션 정보 입력]</b></legend>
 	  <div class="m-4" style="color: red;">
 	  	사이즈 / 색상과 옵션을 같이 사용할 수 없습니다. 사이즈나 색상을 선택하면 옵션이 사라집니다. 옵션을 선택하면 반대가 됩니다.
@@ -235,7 +236,7 @@ $(function() { // HTML 문서가 로딩이 다 되면 실행해라
 		    
 		    <div id="optionDiv" class="input-group">
 		    	<div class="input-group mb-3">
-		    		<input class="form-control" type="text" name="option_name"> 
+		    		<input class="form-control" type="text" name="option_names"> 
 		    	</div>
 		    </div>
 		</fieldset>

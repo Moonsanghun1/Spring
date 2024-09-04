@@ -1,6 +1,10 @@
 package org.zerock.goods.controller;
 
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +14,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.category.service.CategoryService;
 import org.zerock.goods.service.GoodsService;
+import org.zerock.goods.vo.GoodsImageVO;
+import org.zerock.goods.vo.GoodsOptionVO;
+import org.zerock.goods.vo.GoodsSizeColorVO;
 import org.zerock.goods.vo.GoodsVO;
 
+import com.webjjang.util.file.FileUtil;
 import com.webjjang.util.page.PageObject;
 
 import lombok.extern.log4j.Log4j;
@@ -33,6 +43,8 @@ public class GoodsController {
 	@Autowired
 	@Qualifier("categoryServiceImpl")
 	private CategoryService categoryService;
+	
+	String path = "/upload/goods";
 	
 	@GetMapping("/list.do")
 	// 검색을 위한 데이터를 따로 받아야한다.
@@ -68,12 +80,93 @@ public class GoodsController {
 	}
 
 	@PostMapping("/write.do")
-	public String write(GoodsVO vo, RedirectAttributes rttr) {
-		log.info("GoodsController.write()");
+	public String write(GoodsVO vo, 
+			// 대표 이미지
+			MultipartFile imageFile, 
+			// 상세 설명 이미지
+			MultipartFile detailImageFile, 	
+			// 추가 이미지들
+			ArrayList<MultipartFile> imageFiles,
+			// 옵션들 받기 - 사이즈, 컬러, 옵션 : 데이터 1개의 객체가 1개의 단위인 경우 @RequestParam(required = false) 붙여야 한다. 배열인 경우 오류 안남
+			@RequestParam(name="size_nos", required = false) ArrayList<Long> size_nos,
+			@RequestParam(name="color_nos", required = false) ArrayList<Long> color_nos,
+			@RequestParam(name="option_names", required = false) ArrayList<String> option_names,
+			HttpServletRequest request,
+			RedirectAttributes rttr) throws Exception {
+		log.info("GoodsController.write()==========================");
 		log.info(vo);
-		service.write(vo);
+		log.info("대표이미지: " + imageFile.getOriginalFilename() );
+		log.info("상세 설명 이미지: " + detailImageFile.getOriginalFilename());
+		log.info("첨부 이미지들: ");
+		for(MultipartFile file : imageFiles)
+			log.info(file.getOriginalFilename());
+		log.info("사이즈: "+ size_nos);
+		log.info("색상: "+ color_nos);
+		log.info("옵션: "+ option_names);
+		
+		// 이미지 올리가와 DB에 저장할 데이터 수집
+		log.info("<<<--------이미지 처리-------->>");
+		// 대표 이미지 처리
+		vo.setImage_name(FileUtil.upload(path, imageFile, request));
+		// 상품 상세 이미지
+		String fileName = detailImageFile.getOriginalFilename();
+		if(fileName != null && !fileName.equals(""))
+			vo.setDetail_image_name(FileUtil.upload(path, detailImageFile, request));
+		List<GoodsImageVO> goodsImageList = null;
+		// 첨부 이미지 - GoodsImageVO
+		if (imageFiles != null && imageFiles.size() > 0) {
+			for(MultipartFile file : imageFiles) {
+				if (goodsImageList == null) goodsImageList = new ArrayList<>();
+				if(fileName != null && !fileName.equals("")) {
+					GoodsImageVO ImageVO = new GoodsImageVO();
+					ImageVO.setImage_name(FileUtil.upload(path, file, request));
+					goodsImageList.add(ImageVO);
+				}
+			}
+		}
+		log.info(vo);	
+		log.info(goodsImageList);	
+		// 사이즈와 컬러 - 데이터 개수 : 사이즈 * 컬러 - GoodsSizeColorVO
+		List<GoodsSizeColorVO> goodsSizeColorList =null;
+		if(size_nos != null && size_nos.size() > 0) {
+			for(Long sizeNo : size_nos) {
+				if(goodsSizeColorList == null) goodsSizeColorList = new ArrayList<>();
+				if(color_nos != null && color_nos.size() > 0) {
+					for(Long colorNo : color_nos) {
+					GoodsSizeColorVO sizeColorVO = new GoodsSizeColorVO();
+					sizeColorVO.setSize_no(sizeNo);
+					sizeColorVO.setColor_no(colorNo);
+					log.info("#################" + sizeNo);
+					log.info("#################" + colorNo);
+					log.info("#################" + sizeColorVO);
+					
+					log.info("#################" + goodsSizeColorList);
+					goodsSizeColorList.add(sizeColorVO);
+					}
+				}else { // 컬러가 없는 경우
+					GoodsSizeColorVO sizeColorVO = new GoodsSizeColorVO();
+					sizeColorVO.setSize_no(sizeNo);
+					goodsSizeColorList.add(sizeColorVO);
+				}
+			}
+		}
+		log.info("goodsSizeColorList: "+goodsSizeColorList);	
+		
+		List<GoodsOptionVO> goodsOptionList = null;
+		if (option_names != null && option_names.size() > 0) {
+			for(String option_name : option_names) {
+				if(goodsOptionList == null) goodsOptionList = new ArrayList<>();
+				GoodsOptionVO optionVO = new GoodsOptionVO();
+				
+				optionVO.setOption_name(option_name);
+				goodsOptionList.add(optionVO);
+			}
+		}
+		log.info("goodsOptionList: "+ goodsOptionList);
+		// service.write()에 넘길 데이터 - vo, goodsImageList, goodsSizeColorList, goodsOptionList
+//		service.write(vo, goodsImageList, goodsSizeColorList, goodsOptionList);
 		// 처리 결과에 대한 메시지 처리
-		rttr.addFlashAttribute("msg", "일반 게시판 글등록이 되었습니다.");
+		rttr.addFlashAttribute("msg", "상품 등록이 되었습니다.");
 		return "redirect:list.do";
 	}
 	@GetMapping("/updateForm.do")

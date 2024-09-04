@@ -1,5 +1,7 @@
 package org.zerock.goods.vo;
 
+import java.util.ArrayList;
+
 import lombok.Data;
 
 @Data

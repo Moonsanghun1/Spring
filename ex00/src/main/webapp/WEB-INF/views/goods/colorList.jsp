@@ -3,7 +3,7 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 	<c:forEach items="${colorList}" var="vo">
 		<div class="form-check mb-2 mr-sm-2">
-			<label><input class="form-control" type="checkbox" name="size_no" value="${vo.color_no }">
+			<label><input class="form-control" type="checkbox" name="color_nos" value="${vo.color_no }">
 				${vo.color_name }
 			</label>
 		</div>
