@@ -5,6 +5,10 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.zerock.goods.vo.ColorVO;
+import org.zerock.goods.vo.GoodsImageVO;
+import org.zerock.goods.vo.GoodsOptionVO;
+import org.zerock.goods.vo.GoodsSearchVO;
+import org.zerock.goods.vo.GoodsSizeColorVO;
 import org.zerock.goods.vo.GoodsVO;
 import org.zerock.goods.vo.SizeVO;
 
@@ -14,11 +18,15 @@ import com.webjjang.util.page.PageObject;
 public interface GoodsMapper {
 	
 	// 상품 리스트
-	public List<GoodsVO> list(PageObject pageObject);
+	public List<GoodsVO> list(PageObject pageObject, GoodsSearchVO searchVO );
 	
 	public Long getTotalRow(PageObject pageObject);
 	
 	public Integer write(GoodsVO vo);
+	public Integer writeImage(@Param("goodsImageList")List<GoodsImageVO> goodsImageList);
+	public Integer writeSizeColor(@Param("goodsSizeColorList")List<GoodsSizeColorVO> goodsSizeColorList);
+	public Integer writeOption(@Param("goodsOptionList")List<GoodsOptionVO> goodsOptionList);
+	public Integer writePrice(GoodsVO vo);
 
 	public GoodsVO view(Long no);
 	

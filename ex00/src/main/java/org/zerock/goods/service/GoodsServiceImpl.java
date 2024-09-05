@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerock.goods.mapper.GoodsMapper;
 import org.zerock.goods.vo.ColorVO;
+import org.zerock.goods.vo.GoodsImageVO;
+import org.zerock.goods.vo.GoodsOptionVO;
+import org.zerock.goods.vo.GoodsSearchVO;
+import org.zerock.goods.vo.GoodsSizeColorVO;
 import org.zerock.goods.vo.GoodsVO;
 import org.zerock.goods.vo.SizeVO;
 
@@ -29,20 +33,41 @@ public class GoodsServiceImpl implements GoodsService{
 	private GoodsMapper mapper;
 	
 	@Override
-	public List<GoodsVO> list(PageObject pageObject) {
+	public List<GoodsVO> list(PageObject pageObject, GoodsSearchVO searchVO) {
 		pageObject.setTotalRow(mapper.getTotalRow(pageObject));
 		// 게시글 전체 개수 구하기
-		return mapper.list(pageObject);
+		return mapper.list(pageObject, searchVO);
 	}
 	
 	// @Transactional - isert 2번이 성공을 해야 commit한다. 한개라도 오류가 나면 rollback.
 	// 상품, 가격, 이미지, 사이즈컬러, 옵션 -> 등록하다가 하나라도 오류가 나면 다 rollback
 	@Transactional 
 	@Override
-	public Integer write(GoodsVO vo) {
-		Integer result = mapper.write(vo); // 글번호를 시퀀스에서 새로운 번호 사용
-		//vo.setNo(10000L);
-		//mapper.writeTx(vo); // 위에서 사용한 글번호 재사용 - PK 예외 발생
+	public Integer write(GoodsVO vo, List<GoodsImageVO> goodsImageList,
+			List<GoodsSizeColorVO> goodsSizeColorList,
+			List<GoodsOptionVO> goodsOptionList) {
+		Integer result = null; // 글번호를 시퀀스에서 새로운 번호 사용
+		// 상품 상세 정보 - vo : 필수 - 처리가 끝나면 goods_no 세팅되서 넘어온다.
+		mapper.write(vo);
+		// 추가 이미지 goodsImageList. null이 아닌 경우에만 DB에 추가 
+		if(goodsImageList != null && goodsImageList.size() > 0)
+			for(GoodsImageVO imageVO : goodsImageList)
+				imageVO.setGoods_no(vo.getGoods_no());
+			mapper.writeImage(goodsImageList);
+		// 사이즈와 색상 - goodsSizeColorList. null이 아닌 경우에만 DB에 추가 
+		if(goodsSizeColorList != null && goodsSizeColorList.size() > 0)
+			for(GoodsSizeColorVO sizeColorVO : goodsSizeColorList)
+				sizeColorVO.setGoods_no(vo.getGoods_no());
+			mapper.writeSizeColor(goodsSizeColorList);
+		// 추가 이미지 goodsOptionList. null이 아닌 경우에만 DB에 추가 
+		if (goodsOptionList != null && goodsOptionList.size() > 0) {
+		    for (GoodsOptionVO optionVO : goodsOptionList) {
+		        optionVO.setGoods_no(vo.getGoods_no());  // 각 옵션에 goods_no를 설정
+		    }
+		    mapper.writeOption(goodsOptionList);  // goodsOptionList가 null이 아니고 비어 있지 않은 경우에만 매퍼 호출
+		}
+		// 가격 등록
+		mapper.writePrice(vo);
 		return result; 
 	}
 	@Override

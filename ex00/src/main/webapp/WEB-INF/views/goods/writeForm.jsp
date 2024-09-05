@@ -121,6 +121,7 @@ $(function() { // HTML 문서가 로딩이 다 되면 실행해라
 <h1>상품 등록</h1>
 <!-- 상품 기본 정보 입력 -->
 <form action="write.do" method="post" enctype="multipart/form-data">
+	<input type="hidden" value="${param.perPageNum }" name="perPageNum">
 	<fieldset class="border p-4">
 	    <legend class="w-auto px-2"><b style="fron-size: 14pt;">[상품 카테고리 입력]</b></legend>
 	 

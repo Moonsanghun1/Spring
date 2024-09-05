@@ -2,7 +2,6 @@ package org.zerock.goods.controller;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -81,18 +80,19 @@ public class GoodsController {
 
 	@PostMapping("/write.do")
 	public String write(GoodsVO vo, 
-			// 대표 이미지
-			MultipartFile imageFile, 
-			// 상세 설명 이미지
-			MultipartFile detailImageFile, 	
-			// 추가 이미지들
-			ArrayList<MultipartFile> imageFiles,
-			// 옵션들 받기 - 사이즈, 컬러, 옵션 : 데이터 1개의 객체가 1개의 단위인 경우 @RequestParam(required = false) 붙여야 한다. 배열인 경우 오류 안남
-			@RequestParam(name="size_nos", required = false) ArrayList<Long> size_nos,
-			@RequestParam(name="color_nos", required = false) ArrayList<Long> color_nos,
-			@RequestParam(name="option_names", required = false) ArrayList<String> option_names,
-			HttpServletRequest request,
-			RedirectAttributes rttr) throws Exception {
+		// 대표 이미지
+		MultipartFile imageFile, 
+		// 상세 설명 이미지
+		MultipartFile detailImageFile, 	
+		// 추가 이미지들
+		ArrayList<MultipartFile> imageFiles,
+		// 옵션들 받기 - 사이즈, 컬러, 옵션 : 데이터 1개의 객체가 1개의 단위인 경우 @RequestParam(required = false) 붙여야 한다. 배열인 경우 오류 안남
+		@RequestParam(name="size_nos", required = false) ArrayList<Long> size_nos,
+		@RequestParam(name="color_nos", required = false) ArrayList<Long> color_nos,
+		@RequestParam(name="option_names", required = false) ArrayList<String> option_names,
+		
+		HttpServletRequest request,
+		RedirectAttributes rttr) throws Exception {
 		log.info("GoodsController.write()==========================");
 		log.info(vo);
 		log.info("대표이미지: " + imageFile.getOriginalFilename() );
@@ -103,7 +103,7 @@ public class GoodsController {
 		log.info("사이즈: "+ size_nos);
 		log.info("색상: "+ color_nos);
 		log.info("옵션: "+ option_names);
-		
+		String strPerPageNum = request.getParameter("perPageNum");
 		// 이미지 올리가와 DB에 저장할 데이터 수집
 		log.info("<<<--------이미지 처리-------->>");
 		// 대표 이미지 처리
@@ -117,31 +117,30 @@ public class GoodsController {
 		if (imageFiles != null && imageFiles.size() > 0) {
 			for(MultipartFile file : imageFiles) {
 				if (goodsImageList == null) goodsImageList = new ArrayList<>();
+				fileName = file.getOriginalFilename();
 				if(fileName != null && !fileName.equals("")) {
 					GoodsImageVO ImageVO = new GoodsImageVO();
+					// 파일은 서버에 올리고 DB에 저장할 정보를 VO에 저장한다.
 					ImageVO.setImage_name(FileUtil.upload(path, file, request));
 					goodsImageList.add(ImageVO);
 				}
 			}
 		}
 		log.info(vo);	
+		// 첨부 이미지 목록 확인
 		log.info(goodsImageList);	
 		// 사이즈와 컬러 - 데이터 개수 : 사이즈 * 컬러 - GoodsSizeColorVO
 		List<GoodsSizeColorVO> goodsSizeColorList =null;
+		// 사이즈가 있는 경우 처리(옵션이 없다.)
 		if(size_nos != null && size_nos.size() > 0) {
 			for(Long sizeNo : size_nos) {
 				if(goodsSizeColorList == null) goodsSizeColorList = new ArrayList<>();
 				if(color_nos != null && color_nos.size() > 0) {
 					for(Long colorNo : color_nos) {
-					GoodsSizeColorVO sizeColorVO = new GoodsSizeColorVO();
-					sizeColorVO.setSize_no(sizeNo);
-					sizeColorVO.setColor_no(colorNo);
-					log.info("#################" + sizeNo);
-					log.info("#################" + colorNo);
-					log.info("#################" + sizeColorVO);
-					
-					log.info("#################" + goodsSizeColorList);
-					goodsSizeColorList.add(sizeColorVO);
+						GoodsSizeColorVO sizeColorVO = new GoodsSizeColorVO();
+						sizeColorVO.setSize_no(sizeNo);
+						sizeColorVO.setColor_no(colorNo);
+						goodsSizeColorList.add(sizeColorVO);
 					}
 				}else { // 컬러가 없는 경우
 					GoodsSizeColorVO sizeColorVO = new GoodsSizeColorVO();
@@ -152,22 +151,27 @@ public class GoodsController {
 		}
 		log.info("goodsSizeColorList: "+goodsSizeColorList);	
 		
+		// 옵션 - GoodsOptionVO
 		List<GoodsOptionVO> goodsOptionList = null;
+		// 옵션이 있는 경우 처리
 		if (option_names != null && option_names.size() > 0) {
 			for(String option_name : option_names) {
 				if(goodsOptionList == null) goodsOptionList = new ArrayList<>();
-				GoodsOptionVO optionVO = new GoodsOptionVO();
-				
-				optionVO.setOption_name(option_name);
-				goodsOptionList.add(optionVO);
+				// 비어 있지 않으면 추가한다. - if문 추가 필요
+				if(option_names != null && option_names.equals("")) {
+					GoodsOptionVO optionVO = new GoodsOptionVO();
+					optionVO.setOption_name(option_name);
+					goodsOptionList.add(optionVO);
+				}
 			}
 		}
 		log.info("goodsOptionList: "+ goodsOptionList);
 		// service.write()에 넘길 데이터 - vo, goodsImageList, goodsSizeColorList, goodsOptionList
-//		service.write(vo, goodsImageList, goodsSizeColorList, goodsOptionList);
+		service.write(vo, goodsImageList, goodsSizeColorList, goodsOptionList);
 		// 처리 결과에 대한 메시지 처리
+		log.info("상품등록이 되었습니다. 상품 번호: "+vo.getGoods_no());
 		rttr.addFlashAttribute("msg", "상품 등록이 되었습니다.");
-		return "redirect:list.do";
+		return "redirect:list.do?perPageNum="+strPerPageNum;
 	}
 	@GetMapping("/updateForm.do")
 	public String updateForm(Model model, Long no, int inc) {

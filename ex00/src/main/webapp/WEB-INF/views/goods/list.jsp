@@ -150,7 +150,7 @@ $(function() {
 	 			 ${"<div class='row'>"}
 	 			</c:if>
 	 			<!-- 데이터 표시 시작 -->
-	  			<div class="col-md-4 dataRow" >
+	  			<div class="col-md-3 dataRow" >
 	  				<div class="card" style="width:100%">
 	  				<div class = "imageDiv text-center align-content-center" >
 					  	<img class="card-img-top" src="${vo.image_name }" alt="image">
