@@ -34,14 +34,14 @@ public class GoodsServiceImpl implements GoodsService{
 	
 	@Override
 	public List<GoodsVO> list(PageObject pageObject, GoodsSearchVO searchVO) {
-		pageObject.setTotalRow(mapper.getTotalRow(pageObject));
+		pageObject.setTotalRow(mapper.getTotalRow(searchVO));
 		// 게시글 전체 개수 구하기
 		return mapper.list(pageObject, searchVO);
 	}
 	
-	// @Transactional - isert 2번이 성공을 해야 commit한다. 한개라도 오류가 나면 rollback.
+	// @Transactional - insert 2번이 성공을 해야 commit한다. 한개라도 오류가 나면 rollback.
 	// 상품, 가격, 이미지, 사이즈컬러, 옵션 -> 등록하다가 하나라도 오류가 나면 다 rollback
-	@Transactional 
+
 	@Override
 	public Integer write(GoodsVO vo, List<GoodsImageVO> goodsImageList,
 			List<GoodsSizeColorVO> goodsSizeColorList,

@@ -1,30 +1,43 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="pageNav"  tagdir="/WEB-INF/tags"%>
-    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="pageNav" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>일반게시판 리스트</title>
-
+<title>상품 리스트</title>
 <style type="text/css">
+/* 이곳을 주석입니다. Ctrl + Shift + C로 자동 주석 가능. 그러나 푸는 건 안된다.
+	선택자 {스타일 항목 : 스타일 값;스타일 항목 : 스타일 값;...}
+	기본 선택자 : a - a tag, .a - a라는 클래스(여러개), #a - a라는 아이디(한개)
+	다수 선택자 : ","로 선택. a, #a : a tag와 a라는 아이디
+	상태 선택자 : ":". ":hover" - 마우스가 올라갔을 때.
+				 "a:hover" - a tag 위에 마우스가 올라갔을 때
+	선택의 상속 : a .data - a tag 안에 data class의 태그를 찾는다.
+ */
 .dataRow:hover{
-opacity: 20%;
-cursor: pointer;
+	opacity: 70%; /* 투명도 */
+	cursor: pointer;
 }
 
 .imageDiv{
-	background:black;
+	background: black;
 }
+
 .title{
-	height: 60px;
-}
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+ }
+ 
 </style>
+
 <script type="text/javascript">
-$(function() {
+$(function(){
 	
 	// 제목 해당 태그 중 제일 높은 것을 이용하여 모두 맞추기
 	// console.log($(".title"));
@@ -43,15 +56,18 @@ $(function() {
 	
 	// 이미지 사이즈 조정 5:4
 	let imgWidth = $(".imageDiv:first").width();
-	let imgHeight = $(".imageDiv:first").height();
-	console.log("image width= " + imgWidth + ", image Height= " + imgHeight);
-	// 높이 계산 = 너비는 동일하다. : 이미지와 이미지를 감싸고 있는 div의 높이로 사용
-	let height= imgWidth / 5 * 4;
-	// 전체 ImageDiv의 높이를 조정한다.
+	let imgHeight= $(".imageDiv:first").height();
+	console.log("image width=" + imgWidth + ", height=" + imgHeight)
+	// 높이 계산 - 너비는 동일하다. : 이미지와 이미지를 감싸고 있는 div의 높이로 사용
+	let height = imgWidth / 5 * 4;
+	// 전체 imageDiv의 높이를 조정한다.
 	$(".imageDiv").height(height);
-	// 이미지 배열로 처리하지 않는다. foreach를 사용한다. - jquery each()
-	$(".imageDiv > img").each(function(idx, image){		
-	// 이미지가 계산된 높이보다 크면 줄인다.
+	// 이미지 배열로 처리하면 안된다. foreach 사용 - jquery each()
+	$(".imageDiv > img").each(function(idx, image){
+		//alert(image);
+		//alert(height);
+		//alert($(image).height());
+		// 이미지가 계산된 높이 보다 크면 줄인다.
 		if($(image).height() > height){
 			let image_width = $(image).width();
 			let image_height = $(image).height();
@@ -63,131 +79,175 @@ $(function() {
 			$(image).height(height);
 			// 이미지 너비 줄이기
 			$(image).width(width);
-		}	
+			
+		}
 	});
 	
 	// 이벤트 처리
-	$(".dataRow").click(function() {
-// 		alert("click");
-// 		글번호 필요 - 수집
+	$(".dataRow").click(function(){
+		// alert("click");
+		// 글번호 필요 - 수집
 		let no = $(this).find(".no").text();
-		console.log("no = " + no );
-		location="view.do?no=" + no + "&inc=1&${pageObject.pageQuery}" ;
+		console.log("no = " + no);
+		location="view.do?no=" + no + "&${pageObject.pageQuery}";
 	});
 	
+	// 대분류를 바꾸면 중분류도 바꿔야한다.
+	$("#cate_code1").change(function() {
+		$("#cate_code2").load("/ajax/getMidList.do?cate_code1="+$("#cate_code1").val()+"&mode=l");
+	});
 	
-	
-	$("#perPageNum").change(function() {
-		//alert("change perPageNum");
-		// page는 1페이지 + 검색 데이터를 전부 보낸다
+	// perPageNum 처리
+	$("#perPageNum").change(function(){
+		// alert("change perPageNum");
+		// page는 1페이지 + 검색 데이터를 전부 보낸다.
 		$("#searchForm").submit();
 	});
+	// 검색 버튼
+	$("#searchBtn").click(function() {
+		
+		alert("검색");
+		// 검색 내용이 없으면 검색 페이지로 이동하지 않는다.
+		if ($("#cate_code1").val() == 0 & $("#goods_name").val().trim() == ""
+			&& $("#min").val() == 0 && $("min").val() == ""
+			&& $("#max").val() == 0 && $("max").val() == ""
+		
+		)return false; 
+		
+		
+	});
+	
 	// 검색 데이터 세팅
-	$("#key").val("${(empty pageObject.key)?'t':pageObject.key}");
-	$("#perPageNum").val("${(empty pageObject.perPageNum)?'10':pageObject.perPageNum}");
+	$("#cate_code1").val("${searchVO.cate_code1}");
+	$("#cate_code2").val("${searchVO.cate_code2}");
+	$("#goods_name").val("${searchVO.goods_name}");
+	$("#min").val("${searchVO.min}");
+	$("#max").val("${searchVO.max}");
+	
 });
-	</script>
+</script>
+
 </head>
 <body>
-<div class = "container">
-	<h1>이미지 게시판 리스트</h1>
-	<form action="list.do" id = "searchForm">
-		<input name = "page" value="1" type="hidden">
-			<div class="row">
-				<div class="col-md-8">
-					<div class="input-group mb-3">
-						<div class="input-group-prepend">
-
-							<select name="key" id="key" class="form-control">
-								<option value="t">제목</option>
-								<option value="c">내용</option>
-								<option value="tc">제목/내용</option>
-								<option value="f">파일명</option>
-							</select>
-
-						</div>
-						<input type="text" class="form-control" placeholder="검색" id="word" value = "${pageObject.word }"
-							name="word">
-						<div class="input-group-append">
-							<button class = "btn btn-outline-primary">검색</button>
-						</div>
-					</div>
-				</div>
-				<!-- col-md-8의 끝 : 검색 -->
-				<div class="col-md-4">
-				<!-- 너비를 조정하여 오른쪽으로 정렬하기 위한 div. class = "float-right" : 오른쪽 정렬(CSS) -->
-				<div style="width: 175px;" class = "float-right" >
-				<div class="input-group mb-3">
-						<div class="input-group-prepend">
-							<span class = "input-group-text">Rows/Page</span>
-							
-
-						</div>
-						<select id = "perPageNum" name = "perPageNum" class="form-control" >
-						 	<option>8</option>
-						 	<option>12</option>
-						 	<option>16</option>
-						 	<option>20</option>
-						</select>
-					</div>
-				</div>
-				</div>
-				<!-- col-md-4의 끝 : 한 페이지당 표시 데이터 개수 -->
+<div class="container">
+	<h2>상품 리스트</h2>
+	${searchVO.query }
+  <form action="list.do" id="searchForm">
+  	<input name="page" value="1" type="hidden">
+  	<input name="perPageNum" value="${pageObject.perPageNum }" type="hidden">
+  	<!-- 검색 항목 처리 -->
+	  <div class="row">
+	  	<div class="col-md-12 form-inline">
+			<div class="form-group">
+				<label for="cate_code1">대분류</label> 
+				<select class="form-control" name="cate_code1"  id="cate_code1" style="margin: 0 10px;">
+						<option value="0">대분류 선택</option>
+					<c:forEach items="${majList }" var="vo">
+						<option value="${vo.cate_code1 }">${vo.cate_name }</option>
+					</c:forEach>
+				</select>
 			</div>
-		</form>
- 	<c:if test="${empty list }">
- 		<div class = "jumbotron">
- 			<h4>데이터가 존재하지 않습니다.</h4>
- 		</div>
-	</c:if>
- 	<c:if test="${!empty list }">
- 		<div class="row">
- 		<!-- 이미지의 데이터가 있는 만큼 반복해서 표시하는 처리 시작 -->
-	 		<c:forEach items="${list }" var="vo" varStatus="vs">
-	 			<!-- 줄바굼 처리 - 찍는 인덱스 번호가 3의 배수이면 줄바꿈을 한다. -->
-	 			<c:if test="${(vs.index != 0) && (vs.index % 4 == 0 ) }">
-	 			 ${"</div>"}
-	 			 ${"<div class='row'>"}
-	 			</c:if>
-	 			<!-- 데이터 표시 시작 -->
-	  			<div class="col-md-3 dataRow" >
-	  				<div class="card" style="width:100%">
-	  				<div class = "imageDiv text-center align-content-center" >
-					  	<img class="card-img-top" src="${vo.image_name }" alt="image">
-					</div>  	
-					  	<div class="card-body">
-					    	<h5 class="card-title">
-					    		<span class= "float-right">${vo.hit }</span>
-								${vo.goods_name }
-							</h5>
-					    	<p class="card-text text-truncate title">
-					    		<div>
-					    			상품 번호 : <span class="goods_no">${vo.goods_no }</span>
-					    		</div>
-					    		<div>
-					    			정가 : <fmt:formatNumber value="${vo.price }"/>원
-					    		</div>
-					    		<div>
-					    			할인가 : <fmt:formatNumber value="${vo.saved_rate }"/>원
-					    		</div>
-					    			
-					    	</p>
-					  	</div>
-					</div>
-	  			</div>
-	 			<!-- 데이터 표시 끝 -->
-	 		 </c:forEach>		
- 		<!-- 이미지의 데이터가 있는 만큼 반복해서 표시하는 처리 끝 -->	
-		</div>
-		
-	</c:if>
-	
-	<div> 
-	<pageNav:pageNav listURI="list.do" pageObject="${pageObject }"></pageNav:pageNav>
+			<div class="form-group">
+				<label for="cate_code2">중분류</label> 
+				<select class="form-control" name="cate_code2"
+				 id="cate_code2"  style="margin: 0 10px;">
+				 <option value="0">대분류 선택</option>
+					<!-- ajax를 이용한 중분류 option 로딩하기 -->
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="goods_name">상품명</label>
+				<input class="form-control mx-3" name="goods_name"  id="goods_name" min="0">
+			</div>
+			<div class="form-group">
+				<label for="min">최소가격</label>
+				<input class="form-control mx-3" name="min" type="number" id="min" min="0">
+			</div>
+			<div class="form-group">
+				<label for="max">최대가격</label>
+				<input class="form-control mx-3" name="max" type="number" min="0" id="max">
+			</div>
+			<button id="searchBtn" class="btn btn-primary">검색</button>
+	  	</div>
+	  	<!-- col-md-12의 끝 : 검색 -->
+	  </div>
+	  <div class="row">
+	  	<div class="col-md-12">
+	  		<!-- 너비를 조정하기 위한 div 추가. float-right : 오른쪽 정렬 -->
+	  		<div style="width: 200px;" class="float-right">
+			  <div class="input-group mb-3">
+			    <div class="input-group-prepend">
+			      <span class="input-group-text">Rows/Page</span>
+			    </div>
+			    <select id="perPageNum" name="perPageNum" class="form-control">
+			    	<option>6</option>
+			    	<option>9</option>
+			    	<option>12</option>
+			    	<option>15</option>
+			    </select>
+			  </div>
+		  </div>
+	  	</div>
+	  	<!-- col-md-4의 끝 : 한페이지당 표시 데이터 개수 -->
+	  </div>
+  </form>
+  <c:if test="${empty list }">
+	 <div class="jumbotron">
+	    <h4>데이터가 존재하지 않습니다.</h4>      
+	  </div>
+  </c:if>
+  <c:if test="${!empty list }">
+  	<div class="row">
+	  	<!-- 이미지의 데이터가 있는 만큼 반복해서 표시하는 처리 시작 -->
+	  	<c:forEach items="${list }" var="vo" varStatus="vs">
+	  		<!-- 줄바꿈처리 - 찍는 인덱스 번호가 4의 배수이면 줄바꿈을 한다. -->
+	  		<c:if test="${(vs.index != 0) && (vs.index % 4 == 0) }">
+	  			${"</div>"}
+	  			${"<div class='row'>"}
+	  		</c:if>
+	  		<!-- 데이터 표시 시작 -->
+		  	<div class="col-md-3 dataRow">
+		  		<div class="card" style="width:100%">
+		  			<div class="imageDiv text-center align-content-center">
+					  <img class="card-img-top" src="${vo.image_name }" alt="image">
+		  			</div>
+				  <div class="card-body">
+				    <strong class="card-title">
+				    	<span class="float-right">${vo.hit }</span>
+				    	${vo.goods_name }
+				    </strong>
+				    <p class="card-text title">
+				    	<div>
+				    		상품 번호 : <span class="goods_no">${vo.goods_no }</span>
+				    	</div>
+				    	<div>
+				    		정가 : <fmt:formatNumber value="${vo.price }" /> 원</span>
+				    	</div>
+				    	<div>
+				    		판매가 : <fmt:formatNumber value="${vo.sale_price }" /> 원</span>
+				    	</div>
+				    	<div>
+				    		적립금 : ${vo.saved_rate }%</span>
+				    	</div>
+				    </p>
+				  </div>
+				</div>
+		  	</div>
+	  		<!-- 데이터 표시 끝 -->
+	  	</c:forEach>
+	  	<!-- 이미지의 데이터가 있는 만큼 반복해서 표시하는 처리 끝 -->
 	</div>
-<%-- 	<c:if test="${!empty login }"> --%>
-	<!-- 로그인이 되어있으면 보이게 하자. -->
-	<a href="writeForm.do?perPageNum=${pageObject.perPageNum }"><button class="btn btn-primary">등록</button></a>
+	
+	<!-- 페이지 네이션 처리 -->
+	<div>
+		<pageNav:pageNav listURI="list.do" pageObject="${pageObject }" />
+	</div>
+	
+  </c:if>
+  <!-- 리스트 데이터 표시의 끝 -->
+<%-- 	<c:if test="${ !empty login && login.gradeNo == 9}"> --%>
+		<!-- 로그인이 되어있으면 보이게 하자. -->
+		<a href="writeForm.do?perPageNum=${pageObject.perPageNum }" class="btn btn-primary">등록</a>
 <%-- 	</c:if> --%>
 </div>
 </body>

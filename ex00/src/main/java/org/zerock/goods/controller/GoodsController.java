@@ -20,6 +20,7 @@ import org.zerock.category.service.CategoryService;
 import org.zerock.goods.service.GoodsService;
 import org.zerock.goods.vo.GoodsImageVO;
 import org.zerock.goods.vo.GoodsOptionVO;
+import org.zerock.goods.vo.GoodsSearchVO;
 import org.zerock.goods.vo.GoodsSizeColorVO;
 import org.zerock.goods.vo.GoodsVO;
 
@@ -47,9 +48,9 @@ public class GoodsController {
 	
 	@GetMapping("/list.do")
 	// 검색을 위한 데이터를 따로 받아야한다.
-	public String list(Model model, HttpServletRequest request) throws Exception {
+	public String list(Model model, HttpServletRequest request, GoodsSearchVO searchVO) throws Exception {
 		log.info("list.do");
-		
+		model.addAttribute("majList", categoryService.list(0));
 		PageObject pageObject = PageObject.getInstance(request);	
 		
 		// 한 페이지당 보여주는 데이터의 개수가 없으면 기본은 8로 정한다.
@@ -58,7 +59,7 @@ public class GoodsController {
 			
 		
 		//request.setAttribute("list", service.list());
-		model.addAttribute("list", service.list(pageObject));
+		model.addAttribute("list", service.list(pageObject,searchVO));
 		log.info(pageObject);
 		model.addAttribute("pageObject", pageObject);
 		// 검색에 대한 정보도 넘겨야 한다.

@@ -141,7 +141,7 @@ $(function() {
 				<!-- 주메뉴 부분 -->
 				<!-- 오른쪽 부분의 내용을 오른쪽 끝에 두기 위해서 mr-* 오른쪽 마진 사용. auto : 데이터 -->
 				<li class="nav-item ${(empty module || module == '/notice')?'active':'' }"><a class="nav-link" href="/notice/list.do">공지사항</a></li>
-				<li class="nav-item ${(empty module || module == '/shop')?'active':'' }"><a class="nav-link" href="/shop/list.do">쇼핑몰</a></li>
+				<li class="nav-item ${(empty module || module == '/goods')?'active':'' }"><a class="nav-link" href="/goods/list.do">쇼핑몰</a></li>
 				<li class="nav-item ${(empty module || module == '/image')?'active':'' }"><a class="nav-link" href="/image/list.do">Galley</a></li>
 				<li class="nav-item ${(empty module || module == '/board')?'active':'' }"><a class="nav-link" href="/board/list.do">일반게시판</a></li>
 				<li class="nav-item ${(empty module || module == '/qna')?'active':'' }"><a class="nav-link" href="/qna/list.do">질문답변</a></li>

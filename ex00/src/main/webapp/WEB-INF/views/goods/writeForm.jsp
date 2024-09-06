@@ -111,6 +111,25 @@ $(function() { // HTML 문서가 로딩이 다 되면 실행해라
 		// 사이즈와 컬러의 체크박스 전부 해제 시킨다.
 		$("#sizeFieldset input, #colorFieldset input").prop("checked", false);	
 	});
+	
+	// 판매가 계산하는 처리 이벤트
+	$("#price, #discount, #discount_rate").keyup(function() {
+		let price = 0;
+		let discount = 0;
+		let discount_rate = 0;
+		let sale_price = 0;
+		
+		price = Number($("#price").val());
+		discount = Number($("#discount").val());
+		discount_rate = Number($("#discount_rate").val());
+		
+		if(discount > 0) sale_price = price - discount;
+		else if(discount_rate > 0) sale_price = Math.floor((price - (price * discount_rate/100)) / 10) * 10;
+		else sale_price = price;
+		
+		$("#sale_price").val(sale_price);
+	});
+	
 });
 
 </script>
@@ -186,15 +205,19 @@ $(function() { // HTML 문서가 로딩이 다 되면 실행해라
 	<!-- 가격 정보 입력 시작 -->
 	<div class= "form-group">
 		<label for="price">정가</label>
-		<input class = "form-control" type="text"  name="price" id="price" required>
+		<input class = "form-control" type="text"  name="price" id="price" value="0" required>
 	</div>
 	<div class= "form-group">
-		<label for="discount">할인가</label>
-		<input class = "form-control" type="text"  name="discount" id="discount" >
+		<label for="discount">할인해줄가격</label>
+		<input class = "form-control" type="text"  name="discount" id="discount" value="0">
 	</div>
 	<div class= "form-group">
 		<label for="discount_rate">할인율</label>
-		<input class = "form-control" type="text"  name="discount_rate" id="discount_rate" >
+		<input class = "form-control" type="text"  name="discount_rate" id="discount_rate" value="0">
+	</div>
+	<div class= "form-group">
+		<label for="sale_price">할인가</label>
+		<input class = "form-control" type="text"  name="sale_price" id="sale_price" readonly>
 	</div>
 	<div class= "form-group">
 		<label for="delivery_charge">배송료</label>

@@ -2,11 +2,9 @@ package org.zerock.goods.vo;
 
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
-import lombok.val;
 
 @Data
 public class GoodsVO {
@@ -22,6 +20,7 @@ public class GoodsVO {
 	private String image_name; // 리스트에 나타날 대표이미지 
 	private Long hit;
 	private Integer price; // 현재 판매 가격
+	private Integer sale_price; // 할인한 가격
 	private Integer discount; // 현재 가격에 대한 할인가
 	private Integer discount_rate; // 현재 가격에 대한 할인율
 	private Integer delivery_charge; // 배송료
@@ -31,11 +30,12 @@ public class GoodsVO {
 	@DateTimeFormat(pattern = "yy-MM-dd")
 	private Date sale_endDate; // 할인 만료일
 	
-	public Integer getSale_price() {
-		if (discount != null && discount != 0 ) return price - discount;
-		
-		return  (price - (price * discount_rate/100)) / 10 * 10;
-		
-	}
+//	public Integer getSale_price() {
+//		if (discount != null && discount != 0 ) return price - discount;
+//		if (discount_rate != null && discount_rate != 0 )
+//		return  (price - (price * discount_rate/100)) / 10 * 10;
+//		return price;
+//		
+//	}
 	
 }

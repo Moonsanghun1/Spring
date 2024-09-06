@@ -18,14 +18,14 @@ import com.webjjang.util.page.PageObject;
 public interface GoodsMapper {
 	
 	// 상품 리스트
-	public List<GoodsVO> list(PageObject pageObject, GoodsSearchVO searchVO );
+	public List<GoodsVO> list(@Param("pageObject")PageObject pageObject, @Param("searchVO")GoodsSearchVO searchVO);
 	
-	public Long getTotalRow(PageObject pageObject);
+	public Long getTotalRow(@Param("searchVO")GoodsSearchVO searchVO);
 	
 	public Integer write(GoodsVO vo);
-	public Integer writeImage(@Param("goodsImageList")List<GoodsImageVO> goodsImageList);
-	public Integer writeSizeColor(@Param("goodsSizeColorList")List<GoodsSizeColorVO> goodsSizeColorList);
-	public Integer writeOption(@Param("goodsOptionList")List<GoodsOptionVO> goodsOptionList);
+	public Integer writeImage(List<GoodsImageVO> goodsImageList);
+	public Integer writeSizeColor(List<GoodsSizeColorVO> goodsSizeColorList);
+	public Integer writeOption(List<GoodsOptionVO> goodsOptionList);
 	public Integer writePrice(GoodsVO vo);
 
 	public GoodsVO view(Long no);
