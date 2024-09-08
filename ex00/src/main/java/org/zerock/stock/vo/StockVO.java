@@ -1,7 +1,5 @@
 package org.zerock.stock.vo;
 
-import java.sql.Date;
-
 import lombok.Data;
 
 @Data
