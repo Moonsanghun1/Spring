@@ -29,42 +29,10 @@ import okhttp3.Response;
 @Log4j
 public class StockController {
 	
-    private final String API_URL = "https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/quotations/inquire-time-itemchartprice";
+   
     private final String APP_KEY = "PSdTPt6Y6Y8jlz2bZavylela0LPunIuP9CAq"; // 실제 키로 교체 필요
     private final String APP_SECRET = "5A9NiHMzRkPIxx6rujN5hkpZ/LI4lEU69Yh34G4b9YzUxgrSgQMPTMpztTzoXtdIytjMYr6UwlH+CMNQxI33p04UmV4c4KhKrNnWXmV0Y0Qpjp2+Tn4Jxg6iPNNNU5F0pt+m0NQ0ZDnuW+I0CKgjxYTYdwtu7QDmPF/5Z4CCYDVCqwot0zo="; // 실제 키로 교체 필요
-    private String AUTH_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6ImQyNTA1YjEzLTkzMjMtNDNiNy05YTdlLTJhZTczNzBmYTIxYiIsInByZHRfY2QiOiIiLCJpc3MiOiJ1bm9ndyIsImV4cCI6MTcyNDgzNDA4NywiaWF0IjoxNzI0NzQ3Njg3LCJqdGkiOiJQU2RUUHQ2WTZZOGpsejJiWmF2eWxlbGEwTFB1bkl1UDlDQXEifQ.N6KP04-MNguns0xnZl7jrgWU7BOmbIFnq1SOsa-ZhR599q9iDKg6ksPlNnDeLb23fWaP6mhx8yS4F_W5XuDyjQ";
-
-    @GetMapping("/stock-price")
-    public String getStockPrice(Model model) {
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-            .url("https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/quotations/inquire-price?fid_cond_mrkt_div_code=J&fid_input_iscd=005930")
-            .get()
-            .addHeader("content-type", "application/json")
-            .addHeader("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6ImFmMjdlZmM1LTc1NWYtNGNjZS1iMjA0LTZhNjA4Y2EzZGI3ZiIsInByZHRfY2QiOiIiLCJpc3MiOiJ1bm9ndyIsImV4cCI6MTcyMzg4MTU3OCwiaWF0IjoxNzIzNzk1MTc4LCJqdGkiOiJQU2RUUHQ2WTZZOGpsejJiWmF2eWxlbGEwTFB1bkl1UDlDQXEifQ.Uu2HID2lHDmV-FrWHGp4p-26wsdiY1B8He8x0gKQie3flah13_62rxfFHQ38C0vfXyNvZdwowfbvj1Gdayx7oA")  // 여기에 실제 토큰 값을 넣어야 합니다.
-            .addHeader("appkey", "PSdTPt6Y6Y8jlz2bZavylela0LPunIuP9CAq")
-            .addHeader("appsecret", "5A9NiHMzRkPIxx6rujN5hkpZ/LI4lEU69Yh34G4b9YzUxgrSgQMPTMpztTzoXtdIytjMYr6UwlH+CMNQxI33p04UmV4c4KhKrNnWXmV0Y0Qpjp2+Tn4Jxg6iPNNNU5F0pt+m0NQ0ZDnuW+I0CKgjxYTYdwtu7QDmPF/5Z4CCYDVCqwot0zo=")
-            .addHeader("tr_id", "FHKST01010100")
-            .build();
-
-        try {
-            Response response = client.newCall(request).execute();
-            if (response.isSuccessful()) {
-                String responseBody = response.body().string();
-                model.addAttribute("priceData", responseBody);
-            } else {
-            	log.error("Request failed: " + response.code() + " - " + response.message());
-                model.addAttribute("priceData", "Request failed: " + response.code());
-            }
-            response.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            model.addAttribute("priceData", "Error: " + e.getMessage());
-        }
-
-        return "stock/stockPrice"; // stockPrice.jsp로 전달
-    }
+    
     //(웹소켓) 접속키 
     @GetMapping("/get-token-webSocket")
     public String getToken(Model model) {
@@ -135,7 +103,6 @@ public class StockController {
                 JsonNode rootNode = mapper.readTree(responseBody);
                 String accessToken = rootNode.path("access_token").asText();
                 session.setAttribute("token", accessToken);
-                log.info(AUTH_TOKEN);
                 response.close();
                 return accessToken;  // access_token 값 반환
             } else {
@@ -160,49 +127,12 @@ public class StockController {
         
         return "stock/webSocket"; // JSP 파일명에 맞게 변경
     }
-    
-    @GetMapping("/stockMain")
-    public void stockMain(Model model) {
 
-    }
-    
-    @GetMapping("/0")
-    public String getStockChartData(Model model, HttpSession session) {
-        OkHttpClient client = new OkHttpClient().newBuilder().build();
-        MediaType mediaType = MediaType.parse("application/json");
-        String token= (String) session.getAttribute("token");
-        String url = API_URL + "?FID_ETC_CLS_CODE=&FID_COND_MRKT_DIV_CODE=J&FID_INPUT_ISCD=005930&FID_INPUT_HOUR_1=094400&FID_PW_DATA_INCU_YN=Y";
-        
-        Request request = new Request.Builder()
-                .url(url)
-                .get() // GET 요청은 body 없이 사용
-                .addHeader("content-type", "application/json")
-                .addHeader("authorization", "Bearer " + token)
-                .addHeader("appkey", APP_KEY)
-                .addHeader("appsecret", APP_SECRET)
-                .addHeader("tr_id", "FHKST03010200")
-                .build();
-        log.info(AUTH_TOKEN);
-        log.info(token);
-        try {
-            Response response = client.newCall(request).execute();
 
-            if (response.isSuccessful()) {
-                String responseBody = response.body().string();
-                model.addAttribute("chartData", responseBody);
-            } else {
-                log.error("Request failed: " + response.code() + " - " + response.message());
-                model.addAttribute("chartData", "Request failed: " + response.code());
-            }
-
-            response.close();
-        } catch (IOException e) {
-            log.error("Error occurred while getting stock chart data: " + e.getMessage(), e);
-            model.addAttribute("chartData", "Error: " + e.getMessage());
-        }
-
-        return "stock/chart"; // stockChart.jsp로 전달
-    }
+	@GetMapping("/stockMain.do")
+	public String stockMain(Model model) {
+		return "stock/stockMain";
+	}
     
     private String getApprovalKey(String appKey, String appSecret) {
         OkHttpClient client = new OkHttpClient().newBuilder().build();

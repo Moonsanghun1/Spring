@@ -5,11 +5,14 @@
 <head>
 <meta charset="UTF-8">
 <title>모의투자</title>
+<script type="text/javascript">
+	
+</script>
 </head>
 <body>
   <div class="row">
     <div class="col-sm-6">
-      <script src="/WEB-INF/views/stock/chart.jsp"></script>
+      <jsp:include page="/WEB-INF/views/chart/chart.jsp" />
     </div>
     <div class="col-sm-6">
       <p>Sed ut perspiciatis...</p>

@@ -18,13 +18,66 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
+          
+          
+<script type="text/javascript">
+    
+$(function() {
+    $("#monthChart").click(function(){
+        let company_id = "000660";
+        
+        // 날짜 계산
+        const today = new Date();
+        const tenYearsAgo = new Date();
+        tenYearsAgo.setFullYear(today.getFullYear() - 10);
+
+        function formatDate(date) {
+            let year = date.getFullYear();
+            let month = ('0' + (date.getMonth() + 1)).slice(-2);
+            let day = ('0' + date.getDate()).slice(-2);
+            return year + month + day;
+        }
+
+        let data = {
+            company_id: company_id,
+            period_div_code: $(this).val(),
+            startDate: formatDate(tenYearsAgo),
+            endDate: formatDate(today)
+        };
+
+        console.log("Request data: ", data);
+
+        $.ajax({
+            type: "post",
+            url: "/chart/getChartDate.do",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=UTF-8",
+            success: function(result) {
+                console.log("Received data: ", result);  // JSON 데이터를 출력
+                // 필요한 처리를 수행
+            },
+            error: function(xhr, status, er) {
+                console.error("Error: ", er);
+                alert("요청 중 오류가 발생했습니다.");
+            }
+        });
+    });
+});
+
+
+</script>      
 </head>
+
+
 <body>
     <div id="main" style="width: 600px;height:400px;"></div>
 
+	
+
     <script type="text/javascript">
         // Controller에서 받은 chartData를 JavaScript 객체로 변환
-        var chartData = JSON.parse('${chartData}');
+        var chartData = JSON.parse('<%= chartData != null ? chartData.replaceAll("\"", "\\\"") : "{}" %>');
+        console.log(chartData);
 		console.log(chartData);
         function formatDate(date, time) {
             var year = date.substring(0, 4);
@@ -57,7 +110,7 @@
         });
 
         var chartDom = document.getElementById('main');
-        var myChart = echarts.init(chartDom, 'dark');
+        var myChart = echarts.init(chartDom);
         var option;
 
         const upColor = '#00da3c';
@@ -327,17 +380,17 @@
   <div class="container">
   <div class="form-check">
   <label class="form-check-label">
-    <input type="radio" class="form-check-input" name="optradio">일봉
+    <input type="radio" class="form-check-input" name="optradio" value="D" id="dayChart">일봉
   </label>
 </div>
 <div class="form-check">
   <label class="form-check-label">
-    <input type="radio" class="form-check-input" name="optradio">주봉
+    <input type="radio" class="form-check-input" name="optradio" value="W" id="weekChart">주봉
   </label>
 </div>
 <div class="form-check">
   <label class="form-check-label">
-    <input type="radio" class="form-check-input" name="optradio">월봉
+    <input type="radio" class="form-check-input" name="optradio" value="M" id="monthChart">월봉
   </label>
 </div>
 </div>  
