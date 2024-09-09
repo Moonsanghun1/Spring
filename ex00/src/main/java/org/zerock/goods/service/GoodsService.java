@@ -21,7 +21,10 @@ public interface GoodsService {
 			List<GoodsSizeColorVO> goodsSizeColorList,
 			List<GoodsOptionVO> goodsOptionList);
 	
-	public GoodsVO view(Long no, int inc);
+	public GoodsVO view(Long goods_no, int inc);
+	public List<GoodsImageVO> viewImageList(Long goods_no);
+	public List<GoodsSizeColorVO> sizeColorList(Long goods_no);
+	public List<GoodsOptionVO> optionList(Long goods_no);
 	
 	public Integer update(GoodsVO vo);
 	
@@ -42,5 +45,7 @@ public interface GoodsService {
 	public List<SizeVO> getSize(Integer cate_code1);
 	// 상품 색상 가져오기
 	public List<ColorVO> getColor(Integer cate_code1);
+
+	
 
 }

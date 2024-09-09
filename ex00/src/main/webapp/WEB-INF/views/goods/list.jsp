@@ -87,9 +87,9 @@ $(function(){
 	$(".dataRow").click(function(){
 		// alert("click");
 		// 글번호 필요 - 수집
-		let no = $(this).find(".no").text();
-		console.log("no = " + no);
-		location="view.do?no=" + no + "&${pageObject.pageQuery}";
+		let goods_no = $(this).find(".goods_no").text();
+		console.log("goods_no = " + goods_no);
+		location="view.do?goods_no=" + goods_no + "&inc=1" +"&${pageObject.pageQuery}"+ "&${searchVO.query}";
 	});
 	
 	// 대분류를 바꾸면 중분류도 바꿔야한다.

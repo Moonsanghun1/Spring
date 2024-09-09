@@ -11,6 +11,7 @@ public class GoodsVO {
 	private Long goods_no;
 	private Integer cate_code1;
 	private Integer cate_code2;
+	private String cate_name;
 	private String goods_name;
 	private String content; // 보기에 나타날 상세 설명 텍스트
 	private String detail_image_name;// 보기에 나타날 상세 설명 이미지

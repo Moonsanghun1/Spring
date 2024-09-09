@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,7 +49,7 @@ public class GoodsController {
 	
 	@GetMapping("/list.do")
 	// 검색을 위한 데이터를 따로 받아야한다.
-	public String list(Model model, HttpServletRequest request, GoodsSearchVO searchVO) throws Exception {
+	public String list(Model model, HttpServletRequest request, @ModelAttribute("searchVO") GoodsSearchVO searchVO) throws Exception {
 		log.info("list.do");
 		model.addAttribute("majList", categoryService.list(0));
 		PageObject pageObject = PageObject.getInstance(request);	
@@ -60,16 +61,26 @@ public class GoodsController {
 		
 		//request.setAttribute("list", service.list());
 		model.addAttribute("list", service.list(pageObject,searchVO));
-		log.info(pageObject);
+		
 		model.addAttribute("pageObject", pageObject);
 		// 검색에 대한 정보도 넘겨야 한다.
 		return "goods/list";
 	
 	}
 	@GetMapping("/view.do")
-	public String view(Model model, Long no, int inc) {
-		log.info("GoodsController.view()");
-		model.addAttribute("vo", service.view(no,inc));
+	public String view(Model model, @ModelAttribute(name= "goods_no")Long goods_no, int inc,@ModelAttribute(name= "searchVO") GoodsSearchVO searchVO) {
+		
+		log.info("good_no="+ goods_no +", inc="+ inc);
+		
+		
+		model.addAttribute("vo", service.view(goods_no,inc));
+		// 첨부 이미지 파일 리스트
+		model.addAttribute("imageList", service.viewImageList(goods_no));
+		// 사이즈와 색상 리스트
+		model.addAttribute("sizeColorList", service.sizeColorList(goods_no));
+		// 옵션 리스트
+		model.addAttribute("optionList", service.optionList(goods_no));
+		
 		return "goods/view";
 	}
 	@GetMapping("/writeForm.do")

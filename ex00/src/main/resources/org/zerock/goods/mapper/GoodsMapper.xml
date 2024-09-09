@@ -97,16 +97,48 @@
 
 	<!-- 상품 보기 조회수 1 증가 -->
 	<!-- # {obj} 1. 변수의 이름, 2. vo의 getter 이름, 3. Map의 key -->
-	<update id="increase">
+	<update id="inc">
 		update goods set hit = hit + 1
-		where no = #{no}
+		where goods_no = #{goods_no}
 	</update>
 
 	<!-- 상품 보기 -->
 	<select id="view" resultType="org.zerock.goods.vo.GoodsVO">
-		select no, title, content, writer, writeDate, hit
-		from goods
-		where no = #{no}
+		select g.goods_no, g.goods_name, g.cate_code1, g.cate_code2, g.company, g.product_date, g.image_name, g.detail_image_name, 
+		p.price, p.discount, p.discount_rate, c.cate_name, p.saved_rate,
+		p.sale_price, p.delivery_charge, g.hit
+		
+		<!-- from 뒤에 사용할 수 있는 것 : 1.table, 2. select 쿼리 , 3. view table -->
+		from goods g, price p, category c
+		where (g.goods_no = #{goods_no}) and (g.goods_no = p.goods_no and g.cate_code1 = c.cate_code1 and g.cate_code2 = c.cate_code2) 
+	</select>
+	
+	<!-- 상품 이미지 리스트 보기 -->
+	<select id="viewImageList" resultType="org.zerock.goods.vo.GoodsImageVO">
+		select image_no, goods_no, image_name
+		
+		<!-- from 뒤에 사용할 수 있는 것 : 1.table, 2. select 쿼리 , 3. view table -->
+		from goods_image
+		where (goods_no = #{goods_no}) 
+	</select>
+	
+	<!-- 상품 사이즈, 색상 리스트 보기 -->
+	<select id="sizeColorList" resultType="org.zerock.goods.vo.GoodsSizeColorVO">
+		select g.goods_sizeColor_no, g.goods_no, s.size_no, s.size_name, c.color_no, c.color_name
+		
+		<!-- from 뒤에 사용할 수 있는 것 : 1.table, 2. select 쿼리 , 3. view table -->
+		from goods_sizeColor g, basic_color c, basic_size s
+		where (g.goods_no = #{goods_no}) 
+			and (g.size_no = s.size_no and g.color_no = c.color_no(+))
+	</select>
+	
+	<!-- 상품 옵션 리스트 보기 -->
+	<select id="optionList" resultType="org.zerock.goods.vo.GoodsOptionVO">
+		select goods_option_no, goods_no, option_name
+		
+		<!-- from 뒤에 사용할 수 있는 것 : 1.table, 2. select 쿼리 , 3. view table -->
+		from goods_option
+		where (goods_no = #{goods_no}) 
 	</select>
 
 	<!-- 1. 상품 정보 등록 -->
