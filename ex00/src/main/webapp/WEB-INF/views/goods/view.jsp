@@ -95,10 +95,10 @@ $(function(){
 		</div>	
 		<div class="row">	
 			<div class="col-md-12" >
-				<form action="/cart/write.do" method="post">
+				
 					<c:if test="${!empty sizeColorList }">
 						<div class="form-inline">
-						  <div class="input-group mb-3 input-group-sm">
+						  <div class="input-group mb-3">
 						     <div class="input-group-prepend">
 						       <span class="input-group-text">size/color</span>
 						    </div>
@@ -124,6 +124,38 @@ $(function(){
 					
 					<c:if test="${empty optionList and empty sizeColorList}">
 					</c:if>
+				<form action="/cart/write.do" method="post">
+					<!-- 사용자가 구매하려는 것을 선택해서 +를 클릭하면 만들어지는 한 세트의 시작 -->
+					<div class="form-inline">
+						<input name="list[0].goods_no" type="hidden" value="${vo.goods_no }">
+						<input name="list[0].size_no" type="hidden" value="2">
+						<input name="list[0].color_no" type="hidden" value="0">
+						<input name="list[0].goods_option_no" type="hidden" value="0">
+						<div class="form-group">
+							<label>사이즈</label><input readonly value="M" class="form-control">
+						</div>
+						<div class="form-group">
+							<label>수량</label><input type="number" name="count" value="1" class="form-control" min="1">
+						</div>
+					</div>
+					<!-- 사용자가 구매하려는 것을 선택해서 +를 클릭하면 만들어지는 한 세트의 끝 -->
+					<!-- 사용자가 구매하려는 것을 선택해서 +를 클릭하면 만들어지는 한 세트의 시작 -->
+					<div class="form-inline">
+						<input name="list[1].goods_no" type="hidden" value="${vo.goods_no }">
+						<input name="list[1].size_no" type="hidden" value="2">
+						<input name="list[1].color_no" type="hidden" value="0">
+						<input name="list[1].goods_option_no" type="hidden" value="0">
+						<div class="form-group">
+							<label>사이즈</label><input readonly value="XL" class="form-control">
+						</div>
+						<div class="form-group">
+							<label>수량</label><input type="number" name="count" value="1" class="form-control" min="1">
+						</div>
+					</div>
+					<!-- 사용자가 구매하려는 것을 선택해서 +를 클릭하면 만들어지는 한 세트의 끝 -->
+					<div>구매 총액 : <span id = "totalPrice">${vo.sale_price * 4 }</span>원 </div>
+					<div>배송비 : <span id = "deliveryCharge">${(vo.sale_price * 4 < 50000)?vo.delivery_charge:0}</span>원 </div>
+					<button class="btn btn-primary">장바구니 담기</button>
 				</form>
 			</div>
 		</div>

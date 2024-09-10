@@ -1,7 +1,7 @@
 <!-- sitemesh 사용을 위한 설정 파일 -->
 <!-- 작성자 : 문상훈 -->
-<!-- 작성일 : 2017-01-12 -->
-<!-- 최종수정일 : 2024-06-28 -->
+<!-- 작성일 : 2024-07-12 -->
+<!-- 최종수정일 : 2024-09-10 -->
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>

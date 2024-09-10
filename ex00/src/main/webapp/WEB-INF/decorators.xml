@@ -1,29 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE XML>
-<!-- 작성자 : 김승준 -->
-<!-- 작성일 : 2017-01-13 -->
+<!-- 작성자 : 문상훈 -->
+<!-- 작성일 : 2024-07-12 -->
 <!-- 꾸미기(레이아웃)에 대한 선언 -->
 <decorators defaultdir="/WEB-INF/views/decorator">
 	<!-- hello에 대한 요청이 들어오면 적용시키는 레이아웃 선언 -->
 	<decorator name="main" page="default_decorator.jsp">
-		<pattern>/main/*</pattern>
-		<pattern>/pay/*</pattern>
-		<pattern>/member/*</pattern>
-		<pattern>/music/*</pattern>
-		<pattern>/notice/*</pattern>
-		<pattern>/event/*</pattern>
-		<pattern>/album/*</pattern>
-		<pattern>/playlist/*</pattern>
-		<pattern>/cartalbum/*</pattern>
-		<pattern>/board/*</pattern>
-		<pattern>/category/*</pattern>
-		<pattern>/goods/*</pattern>
+		<pattern>/m/main/*</pattern>
+		<pattern>/m/pay/*</pattern>
+		<pattern>/m/member/*</pattern>
+		<pattern>/m/music/*</pattern>
+		<pattern>/m/notice/*</pattern>
+		<pattern>/m/event/*</pattern>
+		<pattern>/m/board/*</pattern>
+		<pattern>/m/category/*</pattern>
+		<pattern>/m/goods/*</pattern>
 		
 	</decorator>
 	
-<!-- 	<decorator name="admin" page="admin_decorator.jsp"> -->
-<!-- 		<pattern>/admin/*</pattern> -->
-<!-- 	</decorator> -->
+	<decorator name="admin" page="sbAdmin_decorator.jsp">
+		<pattern>/main/*</pattern>
+		<pattern>/board/*</pattern>
+		<pattern>/notice/*</pattern>
+		<pattern>/image/*</pattern>
+		<pattern>/qna/*</pattern>
+		<pattern>/message/*</pattern>
+		<pattern>/member/*</pattern>
+		<pattern>/category/*</pattern>
+		<pattern>/goods/*</pattern>
+	</decorator>
 	
 
 </decorators>

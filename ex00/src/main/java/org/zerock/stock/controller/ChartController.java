@@ -1,6 +1,7 @@
 package org.zerock.stock.controller;
 
 import java.io.IOException;
+import java.lang.ProcessHandle.Info;
 
 import javax.servlet.http.HttpSession;
 
@@ -41,7 +42,8 @@ public class ChartController {
         sc.getTokenP(session);
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         String token = (String) session.getAttribute("token");
-        
+        log.info("@@@@@@@@@@@@@@@@@ ="+ vo);
+        log.info("@@@@@@@@@@@@@@@@@ ="+ String.format("%06d", vo.getCompany_id()));
         Request request = new Request.Builder()
             .url("https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/quotations/"
                 + "inquire-daily-itemchartprice?fid_cond_mrkt_div_code=J"
@@ -56,12 +58,13 @@ public class ChartController {
             .addHeader("appsecret", APP_SECRET)
             .addHeader("tr_id", "FHKST03010100")
             .build();
-        
+
         try {
             Response response = client.newCall(request).execute();
-            
+            String responseBody = response.body().string();  // ResponseBody를 변수에 저장
+            log.info("@@@@@@@@@@@@@@@@@ ="+ responseBody);
             if (response.isSuccessful()) {
-                return response.body().string();  // 성공 시 JSON 반환
+                return responseBody;  // 성공 시 JSON 반환
             } else {
                 return "{\"error\": \"Request failed with status code: " + response.code() + "\"}";
             }
