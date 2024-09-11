@@ -5,6 +5,8 @@ import java.lang.ProcessHandle.Info;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +29,7 @@ import okhttp3.Response;
 @Log4j
 public class ChartController {
 	
-	StockController sc = new StockController();
+	TokenController tc = new TokenController();
 	
     private final String APP_KEY = "PSdTPt6Y6Y8jlz2bZavylela0LPunIuP9CAq"; // 실제 키로 교체 필요
     private final String APP_SECRET = "5A9NiHMzRkPIxx6rujN5hkpZ/LI4lEU69Yh34G4b9YzUxgrSgQMPTMpztTzoXtdIytjMYr6UwlH+CMNQxI33p04UmV4c4KhKrNnWXmV0Y0Qpjp2+Tn4Jxg6iPNNNU5F0pt+m0NQ0ZDnuW+I0CKgjxYTYdwtu7QDmPF/5Z4CCYDVCqwot0zo="; // 실제 키로 교체 필요
@@ -38,12 +40,10 @@ public class ChartController {
 			consumes = "application/json", //no, content
 			produces = "text/plain; charset=UTF-8"
 			) 
-    public String getStockChartData(@org.springframework.web.bind.annotation.RequestBody StockVO vo, HttpSession session) {
-        sc.getTokenP(session);
+    public ResponseEntity<String> getStockChartData(@org.springframework.web.bind.annotation.RequestBody StockVO vo, HttpSession session) {
+        tc.getTokenP(session);
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         String token = (String) session.getAttribute("token");
-        log.info("@@@@@@@@@@@@@@@@@ ="+ vo);
-        log.info("@@@@@@@@@@@@@@@@@ ="+ String.format("%06d", vo.getCompany_id()));
         Request request = new Request.Builder()
             .url("https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/quotations/"
                 + "inquire-daily-itemchartprice?fid_cond_mrkt_div_code=J"
@@ -64,13 +64,13 @@ public class ChartController {
             String responseBody = response.body().string();  // ResponseBody를 변수에 저장
             log.info("@@@@@@@@@@@@@@@@@ ="+ responseBody);
             if (response.isSuccessful()) {
-                return responseBody;  // 성공 시 JSON 반환
+                return new ResponseEntity<String>(responseBody, HttpStatus.OK);  // 성공 시 JSON 반환
             } else {
-                return "{\"error\": \"Request failed with status code: " + response.code() + "\"}";
+                return new ResponseEntity<String>("", HttpStatus.OK);
             }
             
         } catch (IOException e) {
-            return "{\"error\": \"Error occurred: " + e.getMessage() + "\"}";
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.OK);
         }
     }
 }

@@ -18,37 +18,75 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
- 
+     <!-- Custom CSS for layout -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+        #main {
+            width: 100%;
+            height: 400px;
+        }
+        .chart-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .stock-list, .trade-form {
+            border: 1px solid #ddd;
+            padding: 20px;
+            background-color: #f9f9f9;
+            margin-top: 20px;
+        }
+        .stock-list h4, .trade-form h4 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .trade-form button {
+            width: 100%;
+        }
+    </style>
  
 <script type="text/javascript">
 function drawChart(chartData) {
+    // 종목 이름 설정
+    const stockName = chartData.output1.hts_kor_isnm;
+
     // chartData를 확인
     console.log(chartData);
-
+ 	
+    // 날짜 포맷팅 함수
     function formatDate(date) {
-        var year = date.substring(0, 4);
-        var month = date.substring(4, 6);
-        var day = date.substring(6, 8);
-
-        return `${year}-${month}-${day}`;
+        if (date.length === 8) {  // 입력 값이 8자리인지 확인
+            var year = date.substring(0, 4);  // 연도 추출
+            var month = date.substring(4, 6); // 월 추출
+            var day = date.substring(6, 8);   // 일 추출
+            return `\${year}-\${month}-\${day}`; // YYYY-MM-DD 형식으로 반환
+        } else {
+            console.error("잘못된 날짜 형식입니다.");  // 날짜 형식 오류 시 로그 출력
+            return null;
+        }
     }
 
     // output2 데이터를 오래된 시간순으로 정렬
     chartData.output2.sort(function(a, b) {
-        var timeA = a.stck_bsop_date + a.stck_cntg_hour; // 날짜와 시간을 결합하여 비교
-        var timeB = b.stck_bsop_date + b.stck_cntg_hour;
+        var timeA = a.stck_bsop_date; // 날짜로만 비교
+        var timeB = b.stck_bsop_date;
         return timeA.localeCompare(timeB); // 오름차순 정렬
     });
 
     // chartData.output2 데이터를 이용해 차트를 그리기
     var rawData = chartData.output2.map(item => {
+    	 
         return [
-            formatDate(item.stck_bsop_date),
+            formatDate(item.stck_bsop_date), // 날짜 포맷
             parseFloat(item.stck_oprc),
             parseFloat(item.stck_clpr),
             parseFloat(item.stck_lwpr),
             parseFloat(item.stck_hgpr),
-            parseFloat(item.cntg_vol)
+            parseFloat(item.acml_vol) // 거래량을 사용
         ];
     });
 
@@ -64,14 +102,14 @@ function drawChart(chartData) {
         let values = [];
         let volumes = [];
         for (let i = 0; i < rawData.length; i++) {
-            categoryData.push(rawData[i].splice(0, 1)[0]);
-            values.push(rawData[i]);
-            volumes.push([i, rawData[i][4], rawData[i][0] > rawData[i][1] ? 1 : -1]);
+            categoryData.push(rawData[i].splice(0, 1)[0]); // 날짜 분리
+            values.push(rawData[i]); // OHLC 데이터
+            volumes.push([i, rawData[i][4], rawData[i][0] > rawData[i][1] ? 1 : -1]); // 거래량
         }
         return {
-            categoryData: categoryData,
-            values: values,
-            volumes: volumes
+            categoryData: categoryData, // 날짜 데이터
+            values: values, // OHLC 데이터
+            volumes: volumes // 거래량 데이터
         };
     }
 
@@ -84,7 +122,7 @@ function drawChart(chartData) {
             }
             var sum = 0;
             for (var j = 0; j < dayCount; j++) {
-                sum += data.values[i - j][1];
+                sum += data.values[i - j][1]; // 종가 사용
             }
             result.push(+(sum / dayCount).toFixed(3));
         }
@@ -98,7 +136,7 @@ function drawChart(chartData) {
             legend: {
                 bottom: 10,
                 left: 'center',
-                data: ['Dow-Jones index', 'MA5', 'MA10', 'MA20', 'MA30']
+                data: [stockName, 'MA5', 'MA10', 'MA20', 'MA30'] // 종목명을 동적으로 설정
             },
             tooltip: {
                 trigger: 'axis',
@@ -177,7 +215,7 @@ function drawChart(chartData) {
             xAxis: [
                 {
                     type: 'category',
-                    data: data.categoryData,
+                    data: data.categoryData, // 날짜 데이터 설정
                     boundaryGap: false,
                     axisLine: { onZero: false },
                     splitLine: { show: false },
@@ -221,7 +259,7 @@ function drawChart(chartData) {
                 {
                     type: 'inside',
                     xAxisIndex: [0, 1],
-                    start: 98,
+                    start: 1,
                     end: 100
                 },
                 {
@@ -235,7 +273,7 @@ function drawChart(chartData) {
             ],
             series: [
                 {
-                    name: 'Dow-Jones index',
+                    name: stockName, // 종목명으로 설정
                     type: 'candlestick',
                     data: data.values,
                     itemStyle: {
@@ -296,16 +334,18 @@ function drawChart(chartData) {
     option && myChart.setOption(option);
 }
 
+
 </script>
           
           
 <script type="text/javascript">
     
 $(function() {
-    $("#monthChart").click(function(){
-        let company_id = "000660";
+    // 차트 데이터를 가져오는 함수
+    function getChartData(period_div_code) {
+        let company_id = "000660";  // 회사 ID 설정
         
-        // 날짜 계산
+        // 날짜 계산 (오늘 날짜와 10년 전 날짜)
         const today = new Date();
         const tenYearsAgo = new Date();
         tenYearsAgo.setFullYear(today.getFullYear() - 10);
@@ -317,32 +357,41 @@ $(function() {
             return year + month + day;
         }
 
+        // 요청할 데이터
         let data = {
             company_id: company_id,
-            period_div_code: $(this).val(),
+            period_div_code: period_div_code,  // 일봉(D), 주봉(W), 월봉(M)
             startDate: formatDate(tenYearsAgo),
             endDate: formatDate(today)
         };
 
         console.log("Request data: ", data);
 
+        // AJAX 요청으로 데이터 가져오기
         $.ajax({
-            type: "post",
-            url: "/chart/getChartDate.do",
-            data: JSON.stringify(data),
-            contentType: "application/json; charset=UTF-8",
+            type: "post",  // POST 요청
+            url: "/chart/getChartDate.do",  // 요청할 URL
+            data: JSON.stringify(data),  // JSON 데이터 전송
+            contentType: "application/json; charset=UTF-8",  // Content-Type 설정
+            dataType: "json",  // 서버에서 반환되는 데이터를 JSON으로 파싱
             success: function(result) {
-                console.log("Received data: ", result);  // JSON 데이터를 출력
-       			drawChart(JSON.parse(result));
-                // 필요한 처리를 수행
+                console.log("Received data: ", result);  // 이미 JSON으로 파싱된 데이터를 출력
+                drawChart(result);  // 파싱된 데이터를 사용하여 차트를 그리기
             },
             error: function(xhr, status, er) {
                 console.error("Error: ", er);
                 alert("요청 중 오류가 발생했습니다.");
             }
         });
+    }
+
+    // 라디오 버튼이 클릭될 때마다 차트 종류에 따라 작동
+    $('input[name="optradio"]').change(function() {
+        let period_div_code = $(this).val();  // 선택된 값(D, W, M)
+        getChartData(period_div_code);  // 차트 데이터 가져오기
     });
 });
+
 
 
 </script>      
@@ -350,28 +399,68 @@ $(function() {
 
 
 <body>
-    <div id="main" style="width: 600px;height:400px;"></div>
 
+    <!-- Layout: Left (Stock List), Center (Chart), Right (Trade Form) -->
+   
+        <div class="row">
+            <!-- Left: Stock List -->
+            <div class="col-md-2 stock-list">
+                <h4>주식 리스트</h4>
+                <ul class="list-group">
+                    <li class="list-group-item">삼성전자</li>
+                    <li class="list-group-item">현대자동차</li>
+                    <li class="list-group-item">SK하이닉스</li>
+                    <li class="list-group-item">LG화학</li>
+                    <li class="list-group-item">네이버</li>
+                </ul>
+            </div>
 
-	
+            <!-- Center: Chart -->
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <div id="main"></div>
+                </div>
 
-  <div class="container">
-  <div class="form-check">
-  <label class="form-check-label">
-    <input type="radio" class="form-check-input" name="optradio" value="D" id="dayChart">일봉
-  </label>
-</div>
-<div class="form-check">
-  <label class="form-check-label">
-    <input type="radio" class="form-check-input" name="optradio" value="W" id="weekChart">주봉
-  </label>
-</div>
-<div class="form-check">
-  <label class="form-check-label">
-    <input type="radio" class="form-check-input" name="optradio" value="M" id="monthChart">월봉
-  </label>
-</div>
-</div>  
+                <!-- Chart Type Selection -->
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="optradio" value="D" id="dayChart">일봉
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="optradio" value="W" id="weekChart">주봉
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="optradio" value="M" id="monthChart">월봉
+                    </label>
+                </div>
+            </div>
+
+            <!-- Right: Trade Form -->
+            <div class="col-md-4 trade-form">
+                <h4>매수 / 매도</h4>
+                <form>
+                    <div class="form-group">
+                        <label for="stockName">종목명</label>
+                        <input type="text" class="form-control" id="stockName" placeholder="종목명 입력">
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">수량</label>
+                        <input type="number" class="form-control" id="quantity" placeholder="수량 입력">
+                    </div>
+                    <div class="form-group">
+                        <label for="price">가격</label>
+                        <input type="number" class="form-control" id="price" placeholder="가격 입력">
+                    </div>
+                    <button type="submit" class="btn btn-success">매수</button>
+                    <button type="submit" class="btn btn-danger mt-2">매도</button>
+                </form>
+            </div>
+        </div>
+  
 
 </body>
 </html>

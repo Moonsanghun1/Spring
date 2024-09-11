@@ -15,6 +15,9 @@
 		<pattern>/m/board/*</pattern>
 		<pattern>/m/category/*</pattern>
 		<pattern>/m/goods/*</pattern>
+		<pattern>/m/stock/*</pattern>
+		<pattern>/m/chart/*</pattern>
+		
 		
 	</decorator>
 	
@@ -28,6 +31,8 @@
 		<pattern>/member/*</pattern>
 		<pattern>/category/*</pattern>
 		<pattern>/goods/*</pattern>
+		<pattern>/stock/*</pattern>
+		<pattern>/chart/*</pattern>
 	</decorator>
 	
 
