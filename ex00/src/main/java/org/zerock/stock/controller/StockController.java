@@ -41,6 +41,7 @@ public class StockController {
 	
 	@GetMapping("/stockList.do")
 	public String stockList(Model model) {
+		log.info(model);
 		return "stock/stockList";
 	}
     

@@ -1,24 +1,20 @@
 package org.zerock.stock.controller;
 
 import java.io.IOException;
-import java.lang.ProcessHandle.Info;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.zerock.stock.vo.StockVO;
 
 import lombok.extern.log4j.Log4j;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -40,14 +36,14 @@ public class ChartController {
 			consumes = "application/json", //no, content
 			produces = "text/plain; charset=UTF-8"
 			) 
-    public ResponseEntity<String> getStockChartData(@org.springframework.web.bind.annotation.RequestBody StockVO vo, HttpSession session) {
+    public ResponseEntity<String> getStockChartData(@RequestBody StockVO vo, HttpSession session) {
         tc.getTokenP(session);
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         String token = (String) session.getAttribute("token");
         Request request = new Request.Builder()
             .url("https://openapivts.koreainvestment.com:29443/uapi/domestic-stock/v1/quotations/"
                 + "inquire-daily-itemchartprice?fid_cond_mrkt_div_code=J"
-                + "&fid_input_iscd=" + String.format("%06d", vo.getCompany_id())
+                + "&fid_input_iscd=" + String.format("%06d", vo.getCompany_code())
                 + "&fid_input_date_1=" + vo.getStartDate()
                 + "&fid_input_date_2=" + vo.getEndDate()
                 + "&fid_period_div_code=" + vo.getPeriod_div_code()

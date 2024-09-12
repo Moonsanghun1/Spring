@@ -390,6 +390,20 @@ $(function() {
         let period_div_code = $(this).val();  // 선택된 값(D, W, M)
         getChartData(period_div_code);  // 차트 데이터 가져오기
     });
+    
+    $('.change-rate').each(function() {
+        // data-rate 속성에서 값을 가져옴
+        var rate = parseFloat($(this).data('rate'));
+
+        // 수익률이 양수면 빨간색, 음수면 연한 파란색 적용
+        if (rate > 0) {
+            $(this).css('color', 'red');
+        } else if (rate < 0) {
+            $(this).css('color', 'blue');
+        } else {
+            $(this).css('color', 'black'); // 0%는 검정색
+        }
+    });
 });
 
 
@@ -404,16 +418,62 @@ $(function() {
    
         <div class="row">
             <!-- Left: Stock List -->
-            <div class="col-md-2 stock-list">
-                <h4>주식 리스트</h4>
-                <ul class="list-group">
-                    <li class="list-group-item">삼성전자</li>
-                    <li class="list-group-item">현대자동차</li>
-                    <li class="list-group-item">SK하이닉스</li>
-                    <li class="list-group-item">LG화학</li>
-                    <li class="list-group-item">네이버</li>
-                </ul>
+<div class="col-md-2 stock-list">
+    <h4>주식 리스트</h4>
+    <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <strong>삼성전자</strong><br>
+                <small class="text-muted">005930</small>  <!-- 주식 코드 -->
             </div>
+            <div class="text-right">
+                <span class="d-block price">70,000원</span> <!-- 현재가 -->
+                <small class="d-block change-rate" data-rate="1.5">1.5%</small> <!-- 전일 대비 수익률 -->
+            </div>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <strong>현대자동차</strong><br>
+                <small class="text-muted">005380</small>
+            </div>
+            <div class="text-right">
+                <span class="d-block price">180,000원</span>
+                <small class="d-block change-rate" data-rate="-0.8">-0.8%</small>
+            </div>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <strong>SK하이닉스</strong><br>
+                <small class="text-muted">000660</small>
+            </div>
+            <div class="text-right">
+                <span class="d-block price">120,000원</span>
+                <small class="d-block change-rate" data-rate="0.2">0.2%</small>
+            </div>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <strong>LG화학</strong><br>
+                <small class="text-muted">051910</small>
+            </div>
+            <div class="text-right">
+                <span class="d-block price">700,000원</span>
+                <small class="d-block change-rate" data-rate="1.1">1.1%</small>
+            </div>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <strong>네이버</strong><br>
+                <small class="text-muted">035420</small>
+            </div>
+            <div class="text-right">
+                <span class="d-block price">350,000원</span>
+                <small class="d-block change-rate" data-rate="-0.5">-0.5%</small>
+            </div>
+        </li>
+    </ul>
+</div>
+
 
             <!-- Center: Chart -->
             <div class="col-md-6">
