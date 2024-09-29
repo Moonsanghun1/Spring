@@ -1,16 +1,16 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Whale/3.27.254.15 Safari/537.36" version="24.7.10">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Whale/3.28.266.11 Safari/537.36" version="24.7.16">
   <diagram name="페이지-1" id="dqylsJnYhqgAnMzMhpsj">
-    <mxGraphModel dx="2533" dy="931" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2048" dy="791" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="MWSaoxZ-hCdOQLXltSvM-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Ycuf4s1c4yRCQeEgw3Ba-18" target="MWSaoxZ-hCdOQLXltSvM-1">
+        <mxCell id="MWSaoxZ-hCdOQLXltSvM-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Ycuf4s1c4yRCQeEgw3Ba-18" target="MWSaoxZ-hCdOQLXltSvM-1" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="Ycuf4s1c4yRCQeEgw3Ba-18" value="메인" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="360" y="110" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="MWSaoxZ-hCdOQLXltSvM-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="MWSaoxZ-hCdOQLXltSvM-1" target="MWSaoxZ-hCdOQLXltSvM-4">
+        <mxCell id="MWSaoxZ-hCdOQLXltSvM-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="MWSaoxZ-hCdOQLXltSvM-1" target="MWSaoxZ-hCdOQLXltSvM-4" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="420" y="380" />
@@ -18,7 +18,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="MWSaoxZ-hCdOQLXltSvM-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="MWSaoxZ-hCdOQLXltSvM-1" target="MWSaoxZ-hCdOQLXltSvM-2">
+        <mxCell id="MWSaoxZ-hCdOQLXltSvM-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="MWSaoxZ-hCdOQLXltSvM-1" target="MWSaoxZ-hCdOQLXltSvM-2" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="420" y="380" />
@@ -26,13 +26,10 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="MWSaoxZ-hCdOQLXltSvM-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="MWSaoxZ-hCdOQLXltSvM-1" target="MWSaoxZ-hCdOQLXltSvM-20">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="MWSaoxZ-hCdOQLXltSvM-1" value="모의투자 메인" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="MWSaoxZ-hCdOQLXltSvM-1" value="모의투자 메인" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="360" y="270" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="MWSaoxZ-hCdOQLXltSvM-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="MWSaoxZ-hCdOQLXltSvM-2" target="MWSaoxZ-hCdOQLXltSvM-11">
+        <mxCell id="MWSaoxZ-hCdOQLXltSvM-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="MWSaoxZ-hCdOQLXltSvM-2" target="MWSaoxZ-hCdOQLXltSvM-11" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="210" y="530" />
@@ -40,7 +37,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="MWSaoxZ-hCdOQLXltSvM-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="MWSaoxZ-hCdOQLXltSvM-2" target="MWSaoxZ-hCdOQLXltSvM-16">
+        <mxCell id="MWSaoxZ-hCdOQLXltSvM-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="MWSaoxZ-hCdOQLXltSvM-2" target="MWSaoxZ-hCdOQLXltSvM-16" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="210" y="530" />
@@ -48,32 +45,29 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="MWSaoxZ-hCdOQLXltSvM-2" value="종목 리스트" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="MWSaoxZ-hCdOQLXltSvM-2" value="종목 리스트" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="150" y="420" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="MWSaoxZ-hCdOQLXltSvM-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="MWSaoxZ-hCdOQLXltSvM-4" target="MWSaoxZ-hCdOQLXltSvM-15">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="MWSaoxZ-hCdOQLXltSvM-4" value="종목 차트" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="MWSaoxZ-hCdOQLXltSvM-4" value="종목 차트" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="600" y="420" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="MWSaoxZ-hCdOQLXltSvM-11" value="종목 상세보기&lt;div&gt;(기업 정보)&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="330" y="570" width="120" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="MWSaoxZ-hCdOQLXltSvM-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="MWSaoxZ-hCdOQLXltSvM-15" target="MWSaoxZ-hCdOQLXltSvM-22">
+        <mxCell id="yW_MIst0R4QWkcth2RYX-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="MWSaoxZ-hCdOQLXltSvM-11" target="MWSaoxZ-hCdOQLXltSvM-15">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="MWSaoxZ-hCdOQLXltSvM-15" value="매수, 매도" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="600" y="560" width="120" height="80" as="geometry" />
+        <mxCell id="yW_MIst0R4QWkcth2RYX-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="MWSaoxZ-hCdOQLXltSvM-11" target="MWSaoxZ-hCdOQLXltSvM-22">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="MWSaoxZ-hCdOQLXltSvM-16" value="개인 포트폴리오" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="MWSaoxZ-hCdOQLXltSvM-11" value="종목 상세보기&lt;div&gt;(기업 정보)&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="330" y="570" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="MWSaoxZ-hCdOQLXltSvM-15" value="매수, 매도" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="220" y="710" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="MWSaoxZ-hCdOQLXltSvM-16" value="개인 포트폴리오" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-30" y="560" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="MWSaoxZ-hCdOQLXltSvM-20" value="관리자 리스트&lt;div&gt;(사용자 포트폴리오)&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="610" y="210" width="120" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="MWSaoxZ-hCdOQLXltSvM-22" value="체결, 미체결 내역" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="600" y="680" width="120" height="80" as="geometry" />
+        <mxCell id="MWSaoxZ-hCdOQLXltSvM-22" value="체결, 미체결 내역" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="450" y="710" width="120" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
